@@ -49,6 +49,7 @@ export default function Task(props) {
         <div key={name}>
             <h4>{name} every {frequency} days</h4>
             <p>Last completed: {lastCompletedString}</p>
+            <Button variant="contained" color="primary">Done</Button>
         </div>
     );
 }
