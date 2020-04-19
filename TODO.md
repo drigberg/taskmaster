@@ -7,6 +7,7 @@
 - UI shows data [done]
 
 ## Stage 2: interactivity
+- Use hooks [done]
 - UI has buttons that do things
 - API accepts POST operations
 
