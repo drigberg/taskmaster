@@ -12,7 +12,7 @@ const {logger, LEVELS} = require('../lib/logger');
  * Module
  */
 
-logger.setLogLevel(LEVELS.DEBUG);
+logger.setLogLevel(LEVELS.SILENCE);
 
 let server;
 

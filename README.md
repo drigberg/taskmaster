@@ -8,6 +8,7 @@ Run `bash run.sh` to run the project with docker-compose.
 ...or run `npm i` and `npm start`!
 
 Run `npm test` to run tests.
+Run `npm lint` to fix style issues.
 
 ## Summary
 This app is for tracking recurring chores!
