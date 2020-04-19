@@ -8,8 +8,11 @@
 
 ## Stage 2: interactivity
 - Use hooks [done]
-- UI has buttons that do things
+- UI has buttons for doing things [done]
+- UI has logic for creating new tasks
 - API accepts POST operations
+- UI can send data to API
+- UI can handle responses from POST requests
 
 ## Stage 3: CloudFormation setup
 - set up EC2
