@@ -36,7 +36,7 @@ Contains:
 - register button
 - link to Github 
 
-### User page (/dashboard/:userId)
+### User page (/dashboard/)
 Lists tasks for user.
 
 Contains:
