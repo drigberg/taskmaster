@@ -1,8 +1,33 @@
 
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Checkbox from '@material-ui/core/Checkbox';
+import Button from '@material-ui/core/Button';
+
 import Task from './Task';
+
+function getEditModeButtons(editMode, setEditMode) {
+    if (editMode) {
+        return <div>
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={() => setEditMode(false)}
+            >Save Changes</Button>
+            <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => setEditMode(false)}
+            >Discard Changes</Button>
+        </div>;
+    }
+    return <div>
+        <Button
+            variant="contained"
+            color="primary"
+            onClick={() => setEditMode(true)}
+        >Edit Tasks</Button>
+    </div>;
+}
 
 export default function Dashboard(props) {
     const {
@@ -14,10 +39,6 @@ export default function Dashboard(props) {
 
     const [editMode, setEditMode] = useState(false);
 
-    const handleEditModeToggle = (event) => {
-        setEditMode(event.target.checked);
-    };
-
     let body = null;
 
     if (fetching) {
@@ -26,15 +47,7 @@ export default function Dashboard(props) {
         body = <div><p>Error: {errorMessage}</p></div>;
     } else {
         body = <div>
-            <div>
-                <label>Edit Mode</label>
-                <Checkbox
-                    checked={editMode}
-                    onChange={handleEditModeToggle}
-                    color="primary"
-                    inputProps={{ 'aria-label': 'secondary checkbox' }}
-                />
-            </div>
+            {getEditModeButtons(editMode, setEditMode)}
             <ul>
                 {tasks.map(({name, frequency, completionDates}) => (
                     <Task 

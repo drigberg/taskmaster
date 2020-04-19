@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 
-export default function Dashboard(props) {
+export default function Task(props) {
     const {
         name,
         frequency,
@@ -53,7 +53,7 @@ export default function Dashboard(props) {
     );
 }
 
-Dashboard.propTypes = {
+Task.propTypes = {
     name: PropTypes.string,
     editMode: PropTypes.bool,
     frequency: PropTypes.number,
