@@ -15,13 +15,13 @@ export default function Dashboard(props) {
     } = props;
 
     const [editMode, setEditMode] = useState(false);
-    const [updateTasks, setUpdateTasks] = useState({});
+    const [taskUpdates, setTaskUpdates] = useState({});
 
     let body = null;
 
     function handleChange(taskId, updateData) {
-        setUpdateTasks({
-            ...updateTasks,
+        setTaskUpdates({
+            ...taskUpdates,
             [taskId]: {
                 ...tasks[taskId],
                 ...updateData
@@ -32,12 +32,12 @@ export default function Dashboard(props) {
     function handleSave() {
         setTasks({
             ...tasks,
-            ...updateTasks
+            ...taskUpdates
         });
     }
 
     function handleDiscardChanges() {
-        setUpdateTasks({});
+        setTaskUpdates({});
     }
 
     if (fetching) {
