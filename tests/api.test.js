@@ -15,7 +15,7 @@ describe('API', function () {
     describe('getUserData', function () {
         describe('success', function () {
             it('returns data for user', async function () {
-                const response = await axios.get(`${BASEURL}/users/lukeskywalker`);
+                const response = await axios.get(`${BASEURL}/api/users/lukeskywalker`);
                 assert.equal(response.status, 200);
                 assert.deepEqual(Object.keys(response.data), ['id', 'name', 'created', 'tasks']);
                 assert.equal(response.data.name, 'Luke Skywalker');
@@ -27,7 +27,7 @@ describe('API', function () {
             it('returns 404 for nonexistent user', async function () {
                 let error = null;
                 try {
-                    await axios.get(`${BASEURL}/users/leiaskywalker`);
+                    await axios.get(`${BASEURL}/api/users/leiaskywalker`);
                 } catch (err) {
                     error = err;
                 }
