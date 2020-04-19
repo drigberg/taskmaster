@@ -4,7 +4,6 @@
 ### GET/users/:id
 Exposes all data for user
 
-
 Request url: GET /api/users/lukeskywalker
 Response:
 ``` json
