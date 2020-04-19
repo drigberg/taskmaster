@@ -1,8 +1,9 @@
-# TO-DO
+# TASKMASTER TO-DO LIST
 
 ## Stage 1: build basic app that works
-- dummy store wraps methods where db will be inserted
-- API exposes data
+- setup boilerplate app [done]
+- dummy store wraps methods where db will be inserted [done]
+- API exposes data [done]
 - UI shows data
 
 ## Stage 2: interactivity
@@ -15,3 +16,9 @@
 - server restarts on error
 - storage with DynamoDB
 - authentication with Cognito
+
+## Stage 4: Auth
+- login flow
+- logout flow
+- UI manages auth using JWT or sessions
+- API only exposes data for current user
