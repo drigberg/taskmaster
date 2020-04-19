@@ -11,10 +11,10 @@ import Dashboard from './components/Dashboard';
 import apiClient from './lib/apiClient';
 
 export default function App() {
-  const [fetching, setFetching] = useState(null);
+  const [fetching, setFetching] = useState(false);
   const [userName, setUserName] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState({});
 
   useEffect(() => {
       setFetching(true);
@@ -23,11 +23,15 @@ export default function App() {
       apiClient._fetchUserData('lukeskywalker')
         .then((data) => {
 
-        const tasks = data.tasks.map(task => ({
-          name: task.name,
-          frequency: task.frequency,
-          completionDates: task.completionDates
-        }));
+        const tasks = Object.entries(data.tasks).reduce((acc, [id, task]) => {
+          acc[id] = {
+            id: task.id,
+            name: task.name,
+            frequency: task.frequency,
+            completionDates: task.completionDates
+          };
+          return acc;
+        }, {});
     
         setTasks(tasks);
         setFetching(false);
@@ -49,6 +53,7 @@ export default function App() {
               fetching={fetching}
               errorMessage={errorMessage}
               tasks={tasks}
+              setTasks={setTasks}
             />
           </Route>
           <Route path="/">

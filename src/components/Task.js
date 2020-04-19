@@ -6,10 +6,12 @@ import TextField from '@material-ui/core/TextField';
 
 export default function Task(props) {
     const {
+        id,
         name,
         frequency,
         completionDates,
-        editMode
+        editMode,
+        handleChange
     } = props;
 
     let lastCompletedString = 'never';
@@ -21,26 +23,40 @@ export default function Task(props) {
         lastCompletedString = `${roundedDays} days ago`;
     }
 
+    function onNameChange(event) {
+        handleChange(id, { name: event.target.value });
+    }
+
+    function onFrequencyChange(event) {
+        handleChange(id, { frequency: parseInt(event.target.value, 10) });
+    }
+
+    function setArchived() {
+        handleChange(id, { archived: true });
+    }
+
     if (editMode) {
         return (
             <div key={name}>
                 <TextField
-                    id="name"
+                    id={name}
                     label="Name"
                     variant="outlined"
-                    value={name}
+                    defaultValue={name}
+                    onChange={onNameChange}
                 />
                 <TextField
-                    id="frequency"
+                    id={String(frequency)}
                     label="Frequency In Days"
                     type="number"
                     InputLabelProps={{
                         shrink: true,
                     }}
                     variant="outlined"
-                    value={frequency}
+                    defaultValue={frequency}
+                    onChange={onFrequencyChange}
                 />
-                <Button variant="contained" color="secondary">Archive</Button>
+                <Button variant="contained" color="secondary" onClick={setArchived}>Archive</Button>
             </div>
         );
     }
@@ -55,8 +71,10 @@ export default function Task(props) {
 }
 
 Task.propTypes = {
+    id: PropTypes.number,
     name: PropTypes.string,
     editMode: PropTypes.bool,
     frequency: PropTypes.number,
     completionDates: PropTypes.array.isRequired,
+    handleChange: PropTypes.func.isRequired
 };

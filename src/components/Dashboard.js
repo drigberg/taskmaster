@@ -5,18 +5,28 @@ import Button from '@material-ui/core/Button';
 
 import Task from './Task';
 
-function getEditModeButtons(editMode, setEditMode) {
+function getEditModeButtons(editMode, setEditMode, handleSave, handleDiscardChanges) {
+    function onSave() {
+        handleSave();
+        setEditMode(false);
+    }
+
+    function onDiscardChanges() {
+        handleDiscardChanges();
+        setEditMode(false);
+    }
+
     if (editMode) {
         return <div>
             <Button
                 variant="contained"
                 color="primary"
-                onClick={() => setEditMode(false)}
+                onClick={onSave}
             >Save Changes</Button>
             <Button
                 variant="contained"
                 color="secondary"
-                onClick={() => setEditMode(false)}
+                onClick={onDiscardChanges}
             >Discard Changes</Button>
         </div>;
     }
@@ -35,11 +45,34 @@ export default function Dashboard(props) {
         fetching,
         errorMessage,
         tasks,
+        setTasks,
     } = props;
 
     const [editMode, setEditMode] = useState(false);
+    const [updateTasks, setUpdateTasks] = useState({});
 
     let body = null;
+
+    function handleChange(taskId, updateData) {
+        setUpdateTasks({
+            ...updateTasks,
+            [taskId]: {
+                ...tasks[taskId],
+                ...updateData
+            }
+        });
+    }
+
+    function handleSave() {
+        setTasks({
+            ...tasks,
+            ...updateTasks
+        });
+    }
+
+    function handleDiscardChanges() {
+        setUpdateTasks({});
+    }
 
     if (fetching) {
         body = <div><p>Fetching data...</p></div>;
@@ -47,15 +80,17 @@ export default function Dashboard(props) {
         body = <div><p>Error: {errorMessage}</p></div>;
     } else {
         body = <div>
-            {getEditModeButtons(editMode, setEditMode)}
+            {getEditModeButtons(editMode, setEditMode, handleSave, handleDiscardChanges)}
             <ul>
-                {tasks.map(({name, frequency, completionDates}) => (
+                {Object.values(tasks).map(({id, name, frequency, completionDates}) => (
                     <Task 
-                        key={name}
+                        key={id}
+                        id={id}
                         name={name}
                         frequency={frequency}
                         completionDates={completionDates}
                         editMode={editMode}
+                        handleChange={handleChange}
                     />))}
             </ul>
         </div>;
@@ -71,7 +106,8 @@ export default function Dashboard(props) {
 
 Dashboard.propTypes = {
     userName: PropTypes.string,
-    fetching: PropTypes.bool,
     errorMessage: PropTypes.string,
-    tasks: PropTypes.array.isRequired
+    fetching: PropTypes.bool.isRequired,
+    tasks: PropTypes.object.isRequired,
+    setTasks: PropTypes.func.isRequired
 };
