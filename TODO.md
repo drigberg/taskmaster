@@ -1,10 +1,10 @@
 # TASKMASTER TO-DO LIST
 
-## Stage 1: build basic app that works
+## Stage 1: build basic app that works [done]
 - setup boilerplate app [done]
 - dummy store wraps methods where db will be inserted [done]
 - API exposes data [done]
-- UI shows data
+- UI shows data [done]
 
 ## Stage 2: interactivity
 - UI has buttons that do things
