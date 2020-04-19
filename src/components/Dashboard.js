@@ -1,43 +1,9 @@
 
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
 
 import Task from './Task';
-
-function getEditModeButtons(editMode, setEditMode, handleSave, handleDiscardChanges) {
-    function onSave() {
-        handleSave();
-        setEditMode(false);
-    }
-
-    function onDiscardChanges() {
-        handleDiscardChanges();
-        setEditMode(false);
-    }
-
-    if (editMode) {
-        return <div>
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={onSave}
-            >Save Changes</Button>
-            <Button
-                variant="contained"
-                color="secondary"
-                onClick={onDiscardChanges}
-            >Discard Changes</Button>
-        </div>;
-    }
-    return <div>
-        <Button
-            variant="contained"
-            color="primary"
-            onClick={() => setEditMode(true)}
-        >Edit Tasks</Button>
-    </div>;
-}
+import EditModeButtons from './EditModeButtons';
 
 export default function Dashboard(props) {
     const {
@@ -80,7 +46,12 @@ export default function Dashboard(props) {
         body = <div><p>Error: {errorMessage}</p></div>;
     } else {
         body = <div>
-            {getEditModeButtons(editMode, setEditMode, handleSave, handleDiscardChanges)}
+            <EditModeButtons
+                editMode={editMode}
+                setEditMode={setEditMode}
+                handleSave={handleSave}
+                handleDiscardChanges={handleDiscardChanges}
+            />
             <ul>
                 {Object.values(tasks).map(({id, name, frequency, completionDates}) => (
                     <Task 
