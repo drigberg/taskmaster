@@ -1,24 +1,8 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-
-function createElementsForTasks(items) {
-    return items.map(item => {
-        let lastCompletedString = 'never';
-        if (item.completionDates.length) {
-            const lastCompleted = item.completionDates[item.completionDates.length - 1];
-            const msSinceCompleted = (new Date() - new Date(lastCompleted));
-            const daysSinceCompleted = msSinceCompleted / (24 * 60 * 60 * 1000);
-            const roundedDays = Math.round(daysSinceCompleted);
-            lastCompletedString = `${roundedDays} days ago`;
-        }
-
-        return (<div key={item.name}>
-            <h4>{item.name} every {item.frequency} days</h4>
-            <p>Last completed: {lastCompletedString}</p> 
-        </div>);
-    });
-}
+import Checkbox from '@material-ui/core/Checkbox';
+import Task from './Task';
 
 export default function Dashboard(props) {
     const {
@@ -27,6 +11,13 @@ export default function Dashboard(props) {
         errorMessage,
         tasks,
     } = props;
+
+    const [editMode, setEditMode] = useState(false);
+
+    const handleEditModeToggle = (event) => {
+        setEditMode(event.target.checked);
+    };
+
     let body = null;
 
     if (fetching) {
@@ -34,7 +25,27 @@ export default function Dashboard(props) {
     } else if (errorMessage) {
         body = <div><p>Error: {errorMessage}</p></div>;
     } else {
-        body = <div>{createElementsForTasks(tasks)}</div>;
+        body = <div>
+            <div>
+                <label>Edit Mode</label>
+                <Checkbox
+                    checked={editMode}
+                    onChange={handleEditModeToggle}
+                    color="primary"
+                    inputProps={{ 'aria-label': 'secondary checkbox' }}
+                />
+            </div>
+            <ul>
+                {tasks.map(({name, frequency, completionDates}) => (
+                    <Task 
+                        key={name}
+                        name={name}
+                        frequency={frequency}
+                        completionDates={completionDates}
+                        editMode={editMode}
+                    />))}
+            </ul>
+        </div>;
     }
 
     return (
