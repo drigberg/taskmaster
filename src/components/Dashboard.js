@@ -19,21 +19,64 @@ export default function Dashboard(props) {
 
     let body = null;
 
-    function handleChange(taskId, updateData) {
-        setTaskUpdates({
-            ...taskUpdates,
-            [taskId]: {
-                ...tasks[taskId],
-                ...updateData
+    /**
+     * Prunes updated task data by removing key-value pairs that are equivalent
+     * to original data
+     * @param {Object} updateData - updates by task id
+     */
+    function getSimplifiedUpdateData(updateData) {
+        const simplified = {};
+        Object.entries(updateData).forEach(([taskId, taskUpdateObj]) => {
+            const taskDiff = {};
+            Object.entries(taskUpdateObj).forEach(([key, value]) => {
+                if (['id', 'completionDates'].includes(key)) {
+                    return;
+                }
+                
+                if (value !== tasks[taskId][key]) {
+                    taskDiff[key] = value;
+                }
+            });
+            if (Object.keys(taskDiff).length > 0) {
+                simplified[taskId] = taskDiff;
             }
         });
+        return simplified;
     }
 
+    /**
+     * Adds new data to update object and reduces to actual diffs
+     * @param {String} taskId 
+     * @param {Object} mutation 
+     */
+    function handleChange(taskId, mutation) {
+        // apply mutation to taskUpdates
+        const updatedDataByTaskId = {
+            ...taskUpdates,
+            [taskId]: {
+                ...taskUpdates[taskId],
+                ...mutation
+            }
+        };
+        // resolve updates that were restored to original value
+        const simplifiedUpdateData = getSimplifiedUpdateData(updatedDataByTaskId);
+        setTaskUpdates(simplifiedUpdateData);
+    }
+
+    /**
+     * Apply updates to tasks
+     */
     function handleSave() {
-        setTasks({
-            ...tasks,
-            ...taskUpdates
+        const updatedTasks = {};
+        Object.keys(tasks).forEach((taskId) => {
+            const updatesForTask = taskUpdates[taskId] || {};
+            updatedTasks[taskId] = {
+                ...tasks[taskId],
+                ...updatesForTask
+            };
         });
+        // TODO: replace with API call
+        setTasks(updatedTasks);
     }
 
     function handleDiscardChanges() {
