@@ -14,13 +14,23 @@ export default function Task(props) {
         handleChange
     } = props;
 
+
+    let className = 'healthy';
     let lastCompletedString = 'never';
     if (completionDates.length) {
+        // assume sorted
         const lastCompleted = completionDates[completionDates.length - 1];
         const msSinceCompleted = (new Date() - new Date(lastCompleted));
         const daysSinceCompleted = msSinceCompleted / (24 * 60 * 60 * 1000);
         const roundedDays = Math.round(daysSinceCompleted);
         lastCompletedString = `${roundedDays} days ago`;
+
+        // determine health of task based on last completion
+        if (roundedDays > frequency && roundedDays < frequency * 2) {
+            className = 'warning';
+        } else {
+            className = 'error';
+        }
     }
 
     function onNameChange(event) {
@@ -62,7 +72,7 @@ export default function Task(props) {
     }
 
     return (
-        <div key={name}>
+        <div key={name} className={className}>
             <h4>{name} every {frequency} days</h4>
             <p>Last completed: {lastCompletedString}</p>
             <Button variant="contained" color="primary">Done</Button>
