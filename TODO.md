@@ -10,7 +10,7 @@
 - Use hooks [done]
 - UI has buttons for doing things [done]
 - UI buttons actually do things [done]
-- UI has logic for creating new tasks
+- UI has logic for creating new tasks [done]
 - API update route
 - API create route
 - UI can send update and create data to API
