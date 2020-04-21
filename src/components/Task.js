@@ -81,7 +81,7 @@ export default function Task(props) {
 }
 
 Task.propTypes = {
-    id: PropTypes.number,
+    id: PropTypes.string,
     name: PropTypes.string,
     editMode: PropTypes.bool,
     frequency: PropTypes.number,

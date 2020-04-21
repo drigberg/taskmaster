@@ -11,6 +11,7 @@ import Dashboard from './components/Dashboard';
 import apiClient from './lib/apiClient';
 
 export default function App() {
+  const [userId, setUserId] = useState('lukeskywalker');
   const [fetching, setFetching] = useState(false);
   const [userName, setUserName] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -20,27 +21,16 @@ export default function App() {
       setFetching(true);
       setErrorMessage(null);
 
-      apiClient._fetchUserData('lukeskywalker')
+      apiClient.fetchUserData(userId)
         .then((data) => {
-
-        const tasks = Object.entries(data.tasks).reduce((acc, [id, task]) => {
-          acc[id] = {
-            id: task.id,
-            name: task.name,
-            frequency: task.frequency,
-            completionDates: task.completionDates
-          };
-          return acc;
-        }, {});
-    
-        setTasks(tasks);
-        setFetching(false);
-        setUserName(data.name);
-      })
-      .catch(() => {
-        setFetching(false);
-        setErrorMessage('Error fetching user data');
-      });
+          setTasks(data.tasks);
+          setFetching(false);
+          setUserName(data.name);
+        })
+        .catch(() => {
+          setFetching(false);
+          setErrorMessage('Error fetching user data');
+        });
   }, []);
 
   return (
@@ -49,6 +39,7 @@ export default function App() {
         <Switch>
           <Route path="/dashboard">
             <Dashboard
+              userId={userId}
               userName={userName}
               fetching={fetching}
               errorMessage={errorMessage}

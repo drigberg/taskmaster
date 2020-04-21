@@ -5,9 +5,11 @@ import PropTypes from 'prop-types';
 import Task from './Task';
 import NewTask from './NewTask';
 import EditModeButtons from './EditModeButtons';
+import apiClient from '../lib/apiClient';
 
 export default function Dashboard(props) {
     const {
+        userId,
         userName,
         fetching,
         errorMessage,
@@ -77,8 +79,14 @@ export default function Dashboard(props) {
                 ...updatesForTask
             };
         });
-        // TODO: replace with API call
-        setTasks(updatedTasks);
+        apiClient.updateTasks(userId, updatedTasks)
+        .then((tasks) => {
+            setTasks(tasks);
+        })
+        .catch((error) => {
+            console.log(error);
+            // TODO: handle error
+        });
     }
 
     function handleDiscardChanges() {
@@ -86,8 +94,14 @@ export default function Dashboard(props) {
     }
 
     function handleCreate(newTaskData) {
-        console.log('Creating:', newTaskData);
-        // TODO: post new task data to API
+        apiClient.createTask(userId, newTaskData)
+        .then((tasks) => {
+            setTasks(tasks);
+        })
+        .catch((error) => {
+            console.log(error);
+            // TODO: handle error
+        });
     }
 
     if (fetching) {
@@ -127,6 +141,7 @@ export default function Dashboard(props) {
 }
 
 Dashboard.propTypes = {
+    userId: PropTypes.string,
     userName: PropTypes.string,
     errorMessage: PropTypes.string,
     fetching: PropTypes.bool.isRequired,
