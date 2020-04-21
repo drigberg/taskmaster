@@ -17,7 +17,7 @@
 - UI can handle responses from POST requests [done]
 - API route for completing tasks
 - UI posts task completion
-- UI only shows archived tasks in edit mode, lists at bottom, allows un-archiving
+- UI only shows archived tasks in edit mode, lists at bottom, allows un-archiving [done]
 
 ## Stage 3: CloudFormation setup
 - set up EC2
