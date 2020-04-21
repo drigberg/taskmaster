@@ -13,7 +13,7 @@ export default function NewTask(props) {
 
     const defaults = {
         name: '',
-        frequency: 0
+        frequency: '0'
     };
 
     const [name, setName] = useState(defaults.name);
@@ -23,7 +23,7 @@ export default function NewTask(props) {
         evt.preventDefault();
         handleCreate({
             name,
-            frequency
+            frequency: parseInt(frequency, 10)
         });
         discard();
     }
@@ -34,15 +34,7 @@ export default function NewTask(props) {
         setCreating(false);
     }
 
-    const disableSave = name === defaults.name || frequency === defaults.frequency;
-
-    function handleFrequencyChange(event) {
-        let parsedInput = 0;
-        if (event.target.value !== '') {
-            parsedInput = parseInt(event.target.value, 10);
-        }
-        setFrequency(parsedInput);
-    }
+    const disableSave = name === defaults.name || ['', defaults.frequency].includes(frequency);
 
     function onAddNewTask() {
         setCreating(true);
@@ -70,7 +62,7 @@ export default function NewTask(props) {
                 }}
                 variant="outlined"
                 value={frequency}
-                onChange={handleFrequencyChange}
+                onChange={e => setFrequency(e.target.value)}
             />
             <Button variant="contained" color="primary" type='submit' disabled={disableSave}>Create</Button>
             <Button variant="contained" color="secondary" onClick={discard}>Discard</Button>
