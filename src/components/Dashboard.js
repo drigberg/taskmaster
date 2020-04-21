@@ -138,21 +138,37 @@ export default function Dashboard(props) {
     } else {
         const unarchivedTasks = Object.values(tasks).filter(task => !task.archived);
         const archivedTasks = Object.values(tasks).filter(task => task.archived);
+        const bodyComponents = [];
 
-        body = <div>
-            {creating ? null : <EditModeButtons
+        // add edit mode buttons
+        if (!creating) {
+            bodyComponents.push(<EditModeButtons
                 editMode={editMode}
                 setEditMode={setEditMode}
                 handleSave={handleSave}
                 handleDiscardChanges={handleDiscardChanges}
-            />}
-            {editMode ? null : <NewTask creating={creating} setCreating={setCreating} handleCreate={handleCreate}/>}
-            <ul>
-                {unarchivedTasks.map(createTaskComponentFromData)}
-                {editMode && archivedTasks.length ? <h3>Archived Tasks</h3> : null}
-                {editMode ? archivedTasks.map(createTaskComponentFromData) : null}
-            </ul>
-        </div>;
+            />);
+        }
+
+        // add newTask component
+        if (!editMode) {
+            bodyComponents.push(<NewTask
+                creating={creating}
+                setCreating={setCreating}
+                handleCreate={handleCreate}/>);
+        }
+
+        // add tasks list
+        const tasksListComponents = [
+            unarchivedTasks.map(createTaskComponentFromData)
+        ];
+        if (editMode && archivedTasks.length) {
+            tasksListComponents.push(<h3>Archived Tasks</h3>, archivedTasks.map(createTaskComponentFromData));
+        }
+        bodyComponents.push(<ul>{tasksListComponents}</ul>);
+
+        // create body
+        body = <div>{bodyComponents}</div>;
     }
 
     return (
