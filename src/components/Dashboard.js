@@ -117,12 +117,28 @@ export default function Dashboard(props) {
         });
     }
 
+    function createTaskComponentFromData(data) {
+        return <Task 
+            key={data.id}
+            id={data.id}
+            archived={data.archived}
+            name={data.name}
+            frequency={data.frequency}
+            completionDates={data.completionDates}
+            editMode={editMode}
+            handleChange={handleChange}
+        />;
+    }
+
     // TODO: use banner here instead of body replace
     if (fetching) {
         body = <div><p>Fetching data...</p></div>;
     } else if (errorMessage) {
         body = <div><p>Error: {errorMessage}</p></div>;
     } else {
+        const unarchivedTasks = Object.values(tasks).filter(task => !task.archived);
+        const archivedTasks = Object.values(tasks).filter(task => task.archived);
+
         body = <div>
             {creating ? null : <EditModeButtons
                 editMode={editMode}
@@ -132,19 +148,9 @@ export default function Dashboard(props) {
             />}
             {editMode ? null : <NewTask creating={creating} setCreating={setCreating} handleCreate={handleCreate}/>}
             <ul>
-                {Object.values(tasks)
-                    .filter(task => !task.archived || editMode)
-                    .map(({id, name, frequency, archived, completionDates}) => (
-                        <Task 
-                            key={id}
-                            id={id}
-                            archived={archived}
-                            name={name}
-                            frequency={frequency}
-                            completionDates={completionDates}
-                            editMode={editMode}
-                            handleChange={handleChange}
-                        />))}
+                {unarchivedTasks.map(createTaskComponentFromData)}
+                {editMode && archivedTasks.length ? <h3>Archived Tasks</h3> : null}
+                {editMode ? archivedTasks.map(createTaskComponentFromData) : null}
             </ul>
         </div>;
     }
