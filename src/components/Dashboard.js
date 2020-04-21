@@ -97,6 +97,13 @@ export default function Dashboard(props) {
 
     function handleDiscardChanges() {
         setTasksMutations({});
+        apiClient.fetchUserData(userId)
+            .then((data) => {
+                setTasks(data.tasks);
+            })
+            .catch(() => {
+                // TODO: handle error
+            });
     }
 
     function handleCreate(newTaskData) {
