@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Task from './Task';
+import NewTask from './NewTask';
 import EditModeButtons from './EditModeButtons';
 
 export default function Dashboard(props) {
@@ -14,6 +15,7 @@ export default function Dashboard(props) {
         setTasks,
     } = props;
 
+    const [creating, setCreating] = useState(false);
     const [editMode, setEditMode] = useState(false);
     const [taskUpdates, setTaskUpdates] = useState({});
 
@@ -83,18 +85,24 @@ export default function Dashboard(props) {
         setTaskUpdates({});
     }
 
+    function handleCreate(newTaskData) {
+        console.log('Creating:', newTaskData);
+        // TODO: post new task data to API
+    }
+
     if (fetching) {
         body = <div><p>Fetching data...</p></div>;
     } else if (errorMessage) {
         body = <div><p>Error: {errorMessage}</p></div>;
     } else {
         body = <div>
-            <EditModeButtons
+            {creating ? null : <EditModeButtons
                 editMode={editMode}
                 setEditMode={setEditMode}
                 handleSave={handleSave}
                 handleDiscardChanges={handleDiscardChanges}
-            />
+            />}
+            {editMode ? null : <NewTask creating={creating} setCreating={setCreating} handleCreate={handleCreate}/>}
             <ul>
                 {Object.values(tasks).map(({id, name, frequency, completionDates}) => (
                     <Task 
