@@ -3,12 +3,12 @@ import axios from 'axios';
 
 class ApiClient {
     parseTasks(tasks) {
-        console.log('Parsing tasks...')
         return Object.entries(tasks).reduce((acc, [id, task]) => {
             acc[id] = {
               id: task.id,
               name: task.name,
               frequency: task.frequency,
+              archived: task.archived,
               completionDates: task.completionDates
             };
             return acc;

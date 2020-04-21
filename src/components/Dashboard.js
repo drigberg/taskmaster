@@ -19,7 +19,10 @@ export default function Dashboard(props) {
 
     const [creating, setCreating] = useState(false);
     const [editMode, setEditMode] = useState(false);
-    const [taskUpdates, setTaskUpdates] = useState({});
+
+    // tasksMutations is the simplified set of mutations to be provided
+    // in the POST call to updateTasks
+    const [tasksMutations, setTasksMutations] = useState({});
 
     let body = null;
 
@@ -54,32 +57,35 @@ export default function Dashboard(props) {
      * @param {Object} mutation 
      */
     function handleChange(taskId, mutation) {
-        // apply mutation to taskUpdates
+        // apply mutation to tasksMutations
         const updatedDataByTaskId = {
-            ...taskUpdates,
+            ...tasksMutations,
             [taskId]: {
-                ...taskUpdates[taskId],
+                ...tasksMutations[taskId],
                 ...mutation
             }
         };
         // resolve updates that were restored to original value
         const simplifiedUpdateData = getSimplifiedUpdateData(updatedDataByTaskId);
-        setTaskUpdates(simplifiedUpdateData);
+        setTasksMutations(simplifiedUpdateData);
+        
+        // apply updates to tasks
+        const updatedTasks = {};
+        Object.keys(tasks).forEach((taskId) => {
+            const updatesForTask = simplifiedUpdateData[taskId] || {};
+            updatedTasks[taskId] = {
+                ...tasks[taskId],
+                ...updatesForTask
+            };
+        });
+        setTasks(updatedTasks);
     }
 
     /**
      * Apply updates to tasks
      */
     function handleSave() {
-        const updatedTasks = {};
-        Object.keys(tasks).forEach((taskId) => {
-            const updatesForTask = taskUpdates[taskId] || {};
-            updatedTasks[taskId] = {
-                ...tasks[taskId],
-                ...updatesForTask
-            };
-        });
-        apiClient.updateTasks(userId, updatedTasks)
+        apiClient.updateTasks(userId, tasks)
         .then((tasks) => {
             setTasks(tasks);
         })
@@ -90,7 +96,7 @@ export default function Dashboard(props) {
     }
 
     function handleDiscardChanges() {
-        setTaskUpdates({});
+        setTasksMutations({});
     }
 
     function handleCreate(newTaskData) {
@@ -104,6 +110,7 @@ export default function Dashboard(props) {
         });
     }
 
+    // TODO: use banner here instead of body replace
     if (fetching) {
         body = <div><p>Fetching data...</p></div>;
     } else if (errorMessage) {
@@ -118,16 +125,19 @@ export default function Dashboard(props) {
             />}
             {editMode ? null : <NewTask creating={creating} setCreating={setCreating} handleCreate={handleCreate}/>}
             <ul>
-                {Object.values(tasks).map(({id, name, frequency, completionDates}) => (
-                    <Task 
-                        key={id}
-                        id={id}
-                        name={name}
-                        frequency={frequency}
-                        completionDates={completionDates}
-                        editMode={editMode}
-                        handleChange={handleChange}
-                    />))}
+                {Object.values(tasks)
+                    .filter(task => !task.archived || editMode)
+                    .map(({id, name, frequency, archived, completionDates}) => (
+                        <Task 
+                            key={id}
+                            id={id}
+                            archived={archived}
+                            name={name}
+                            frequency={frequency}
+                            completionDates={completionDates}
+                            editMode={editMode}
+                            handleChange={handleChange}
+                        />))}
             </ul>
         </div>;
     }

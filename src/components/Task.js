@@ -10,6 +10,7 @@ export default function Task(props) {
         name,
         frequency,
         completionDates,
+        archived,
         editMode,
         handleChange
     } = props;
@@ -41,11 +42,26 @@ export default function Task(props) {
         handleChange(id, { frequency: parseInt(event.target.value, 10) });
     }
 
-    function setArchived() {
-        handleChange(id, { archived: true });
+    function setArchived(val) {
+        handleChange(id, { archived: val });
     }
 
     if (editMode) {
+        let archiveToggleButton;
+        if (archived) {
+            // onMouseDown used because onClick doesn't fire if onBlur is firing
+            // from an input at the same time.
+            // (see https://stackoverflow.com/questions/44142273/react-ul-with-onblur-event-is-preventing-onclick-from-firing-on-li)
+            archiveToggleButton = <Button
+                variant="contained"
+                color="secondary"
+                onMouseDown={() => setArchived(false)}>Unarchive</Button>;
+        } else {
+            archiveToggleButton = <Button
+                variant="contained"
+                color="secondary"
+                onMouseDown={() => setArchived(true)}>Archive</Button>;
+        }
         return (
             <div key={name}>
                 <TextField
@@ -53,7 +69,7 @@ export default function Task(props) {
                     label="Name"
                     variant="outlined"
                     defaultValue={name}
-                    onChange={onNameChange}
+                    onBlur={onNameChange}
                 />
                 <TextField
                     id={String(frequency)}
@@ -64,9 +80,9 @@ export default function Task(props) {
                     }}
                     variant="outlined"
                     defaultValue={frequency}
-                    onChange={onFrequencyChange}
+                    onBlur={onFrequencyChange}
                 />
-                <Button variant="contained" color="secondary" onClick={setArchived}>Archive</Button>
+                {archiveToggleButton}
             </div>
         );
     }
@@ -85,6 +101,7 @@ Task.propTypes = {
     name: PropTypes.string,
     editMode: PropTypes.bool,
     frequency: PropTypes.number,
+    archived: PropTypes.bool.isRequired,
     completionDates: PropTypes.array.isRequired,
     handleChange: PropTypes.func.isRequired
 };
