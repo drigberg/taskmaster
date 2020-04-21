@@ -37,7 +37,7 @@ describe('API', function () {
         });
     });
 
-    describe('createTaskForUser', function () {
+    describe('createTask', function () {
         describe('success', function () {
             it('returns updated data for user', async function () {
                 const {data: originalData} = await axios.get(`${BASEURL}/api/users/lukeskywalker`);
@@ -71,6 +71,78 @@ describe('API', function () {
                 let error = null;
                 try {
                     await axios.post(`${BASEURL}/api/users/leiaskywalker/createTask`, {});
+                } catch (err) {
+                    error = err;
+                }
+                assert.notEqual(error, null);
+                assert.equal(error.response.status, 404);
+            });
+        });
+    });
+
+    describe('updateTasks', function () {
+        describe('success', function () {
+            it('one task - all properties', async function () {
+                const {data: originalData} = await axios.get(`${BASEURL}/api/users/lukeskywalker`);
+                const taskIds = Object.keys(originalData.tasks);
+                const taskId1 = taskIds[0];
+                const payload = {
+                    [taskId1]: {
+                        name: 'updatedTask1',
+                        frequency: 999
+                    },
+                };
+                const response = await axios.post(`${BASEURL}/api/users/lukeskywalker/updateTasks`, payload);
+                assert.equal(response.status, 200);
+                assert.deepEqual(Object.keys(response.data), ['id', 'name', 'created', 'tasks']);
+                assert.equal(response.data.name, 'Luke Skywalker');
+                assert.equal(response.data.id, 'lukeskywalker');
+                assert.equal(Object.keys(response.data.tasks).length, taskIds.length);
+
+                const actual = response.data.tasks[taskId1];
+                const expected = {
+                    ...originalData.tasks[taskId1],
+                    ...payload[taskId1]
+                };
+                assert.deepEqual(actual, expected);
+                Object.values(originalData.tasks).filter(task => task.id !== taskId1).forEach((task) => {
+                    assert.deepEqual(task, response.data.tasks[task.id]);
+                });
+            });
+
+            it('one task - one property', async function () {
+                const {data: originalData} = await axios.get(`${BASEURL}/api/users/lukeskywalker`);
+                const taskIds = Object.keys(originalData.tasks);
+                const taskId1 = taskIds[0];
+                const payload = {
+                    [taskId1]: {
+                        frequency: 999
+                    },
+                };
+                const response = await axios.post(`${BASEURL}/api/users/lukeskywalker/updateTasks`, payload);
+                assert.equal(response.status, 200);
+                assert.deepEqual(Object.keys(response.data), ['id', 'name', 'created', 'tasks']);
+                assert.equal(response.data.name, 'Luke Skywalker');
+                assert.equal(response.data.id, 'lukeskywalker');
+                assert.equal(Object.keys(response.data.tasks).length, taskIds.length);
+
+                const actual = response.data.tasks[taskId1];
+                const expected = {
+                    ...originalData.tasks[taskId1],
+                    ...payload[taskId1]
+                };
+                assert.deepEqual(actual, expected);
+                Object.values(originalData.tasks).filter(task => task.id !== taskId1).forEach((task) => {
+                    assert.deepEqual(task, response.data.tasks[task.id]);
+                });
+            });
+        });
+
+        describe('error', function () {
+            it('returns 404 for nonexistent user', async function () {
+                let error = null;
+                try {
+                    await axios.post(`${BASEURL}/api/users/leiaskywalker/updateTasks`, {});
                 } catch (err) {
                     error = err;
                 }
