@@ -8,7 +8,7 @@
 - `npm i`: install dependencies
 - `npm start`: run the app
 - `npm test`: run tests
-- `npm lint`: fix style issues
+- `npm run lint`: fix style issues
 
 ## Summary
 This app is for tracking recurring chores!

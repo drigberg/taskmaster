@@ -11,10 +11,12 @@
 - UI has buttons for doing things [done]
 - UI buttons actually do things [done]
 - UI has logic for creating new tasks [done]
-- API update route
-- API create route
-- UI can send update and create data to API
-- UI can handle responses from POST requests
+- API update route [done]
+- API create route [done]
+- UI can send update and create data to API [done]
+- UI can handle responses from POST requests [done]
+- API route for completing tasks
+- UI posts task completion
 - UI only shows archived tasks in edit mode, lists at bottom, allows un-archiving
 
 ## Stage 3: CloudFormation setup
@@ -25,12 +27,14 @@
 - authentication with Cognito
 
 ## Stage 4: Auth
+- registration flow
 - login flow
 - logout flow
-- UI manages auth using JWT or sessions
 - API only exposes data for current user
 
 # Stretch goals
+- UI tests
 - task categories: group tasks by root and custom namespaces (household, work, etc)
 - offline mode
 - PWA
+- GraphQL
