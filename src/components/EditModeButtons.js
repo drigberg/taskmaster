@@ -24,11 +24,13 @@ export default function EditModeButtons(props) {
     if (editMode) {
         return <div>
             <Button
+                key='save'
                 variant="contained"
                 color="primary"
                 onClick={onSave}
             >Save Changes</Button>
             <Button
+                key='discard'
                 variant="contained"
                 color="secondary"
                 onClick={onDiscardChanges}
@@ -38,6 +40,7 @@ export default function EditModeButtons(props) {
 
     return <div>
         <Button
+            key='edit'
             variant="contained"
             color="primary"
             onClick={() => setEditMode(true)}

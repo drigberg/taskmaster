@@ -33,6 +33,16 @@ class ApiClient {
         const response = await axios.post(`/api/users/${userId}/updateTasks`, payload);
         return this.parseTasks(response.data.tasks);
     }
+
+    async addTaskCompletion(userId, taskId, dateString) {
+        const response = await axios.post(
+            `/api/users/${userId}/addTaskCompletion`,
+            { 
+                completionDate: dateString,
+                taskId,
+            });
+        return this.parseTasks(response.data.tasks);
+    }
 }
 
 export default new ApiClient();

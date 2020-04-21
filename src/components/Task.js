@@ -12,7 +12,8 @@ export default function Task(props) {
         completionDates,
         archived,
         editMode,
-        handleChange
+        handleChange,
+        handleTaskCompletion
     } = props;
 
 
@@ -21,10 +22,14 @@ export default function Task(props) {
     if (completionDates.length) {
         // assume sorted
         const lastCompleted = completionDates[completionDates.length - 1];
-        const msSinceCompleted = (new Date() - new Date(lastCompleted));
+        const today = new Date(new Date().setHours(0, 0, 0, 0));
+        const msSinceCompleted = (today - new Date(lastCompleted));
         const daysSinceCompleted = msSinceCompleted / (24 * 60 * 60 * 1000);
         const roundedDays = Math.round(daysSinceCompleted);
         lastCompletedString = `${roundedDays} days ago`;
+        if (roundedDays === 0) {
+            lastCompletedString = 'today';
+        }
 
         // determine health of task based on last completion
         if (roundedDays > frequency && roundedDays < frequency * 2) {
@@ -91,7 +96,7 @@ export default function Task(props) {
         <div key={name} className={className}>
             <h4>{name} every {frequency} days</h4>
             <p>Last completed: {lastCompletedString}</p>
-            <Button variant="contained" color="primary">Done</Button>
+            <Button variant="contained" color="primary" onMouseDown={() => handleTaskCompletion(id)}>Done</Button>
         </div>
     );
 }
@@ -103,5 +108,6 @@ Task.propTypes = {
     frequency: PropTypes.number,
     archived: PropTypes.bool.isRequired,
     completionDates: PropTypes.array.isRequired,
-    handleChange: PropTypes.func.isRequired
+    handleChange: PropTypes.func.isRequired,
+    handleTaskCompletion: PropTypes.func.isRequired
 };

@@ -6,7 +6,7 @@
 - API exposes data [done]
 - UI shows data [done]
 
-## Stage 2: interactivity
+## Stage 2: interactivity [done]
 - Use hooks [done]
 - UI has buttons for doing things [done]
 - UI buttons actually do things [done]
@@ -15,8 +15,8 @@
 - API create route [done]
 - UI can send update and create data to API [done]
 - UI can handle responses from POST requests [done]
-- API route for completing tasks
-- UI posts task completion
+- API route for completing tasks [done]
+- UI posts task completion [done]
 - UI only shows archived tasks in edit mode, lists at bottom, allows un-archiving [done]
 
 ## Stage 3: CloudFormation setup

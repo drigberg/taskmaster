@@ -117,6 +117,18 @@ export default function Dashboard(props) {
         });
     }
 
+    function handleTaskCompletion(taskId) {
+        const dateString = (new Date()).toISOString().split('T')[0];
+        apiClient.addTaskCompletion(userId, taskId, dateString)
+        .then((tasks) => {
+            setTasks(tasks);
+        })
+        .catch((error) => {
+            console.log(error);
+            // TODO: handle error
+        });
+    }
+
     function createTaskComponentFromData(data) {
         return <Task 
             key={data.id}
@@ -127,6 +139,7 @@ export default function Dashboard(props) {
             completionDates={data.completionDates}
             editMode={editMode}
             handleChange={handleChange}
+            handleTaskCompletion={handleTaskCompletion}
         />;
     }
 
@@ -143,6 +156,7 @@ export default function Dashboard(props) {
         // add edit mode buttons
         if (!creating) {
             bodyComponents.push(<EditModeButtons
+                key='editModeButtons'
                 editMode={editMode}
                 setEditMode={setEditMode}
                 handleSave={handleSave}
@@ -153,6 +167,7 @@ export default function Dashboard(props) {
         // add newTask component
         if (!editMode) {
             bodyComponents.push(<NewTask
+                key='newTask'
                 creating={creating}
                 setCreating={setCreating}
                 handleCreate={handleCreate}/>);
@@ -163,9 +178,9 @@ export default function Dashboard(props) {
             unarchivedTasks.map(createTaskComponentFromData)
         ];
         if (editMode && archivedTasks.length) {
-            tasksListComponents.push(<h3>Archived Tasks</h3>, archivedTasks.map(createTaskComponentFromData));
+            tasksListComponents.push(<h3 key='archivedTasks'>Archived Tasks</h3>, archivedTasks.map(createTaskComponentFromData));
         }
-        bodyComponents.push(<ul>{tasksListComponents}</ul>);
+        bodyComponents.push(<ul key='tasksListComponents'>{tasksListComponents}</ul>);
 
         // create body
         body = <div>{bodyComponents}</div>;
