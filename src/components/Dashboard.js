@@ -11,7 +11,10 @@ export default function Dashboard(props) {
 
   const [creating, setCreating] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  const [taskUpdates, setTaskUpdates] = useState({});
+
+  // tasksMutations is the simplified set of mutations to be provided
+  // in the POST call to updateTasks
+  const [tasksMutations, setTasksMutations] = useState({});
 
   let body = null;
 
@@ -46,33 +49,36 @@ export default function Dashboard(props) {
    * @param {Object} mutation
    */
   function handleChange(taskId, mutation) {
-    // apply mutation to taskUpdates
+    // apply mutation to tasksMutations
     const updatedDataByTaskId = {
-      ...taskUpdates,
+      ...tasksMutations,
       [taskId]: {
-        ...taskUpdates[taskId],
+        ...tasksMutations[taskId],
         ...mutation,
       },
     };
     // resolve updates that were restored to original value
     const simplifiedUpdateData = getSimplifiedUpdateData(updatedDataByTaskId);
-    setTaskUpdates(simplifiedUpdateData);
+    setTasksMutations(simplifiedUpdateData);
+
+    // apply updates to tasks
+    const updatedTasks = {};
+    Object.keys(tasks).forEach((taskId) => {
+      const updatesForTask = simplifiedUpdateData[taskId] || {};
+      updatedTasks[taskId] = {
+        ...tasks[taskId],
+        ...updatesForTask,
+      };
+    });
+    setTasks(updatedTasks);
   }
 
   /**
    * Apply updates to tasks
    */
   function handleSave() {
-    const updatedTasks = {};
-    Object.keys(tasks).forEach((taskId) => {
-      const updatesForTask = taskUpdates[taskId] || {};
-      updatedTasks[taskId] = {
-        ...tasks[taskId],
-        ...updatesForTask,
-      };
-    });
     apiClient
-      .updateTasks(userId, updatedTasks)
+      .updateTasks(userId, tasks)
       .then((tasks) => {
         setTasks(tasks);
       })
@@ -83,7 +89,15 @@ export default function Dashboard(props) {
   }
 
   function handleDiscardChanges() {
-    setTaskUpdates({});
+    setTasksMutations({});
+    apiClient
+      .fetchUserData(userId)
+      .then((data) => {
+        setTasks(data.tasks);
+      })
+      .catch(() => {
+        // TODO: handle error
+      });
   }
 
   function handleCreate(newTaskData) {
@@ -98,6 +112,39 @@ export default function Dashboard(props) {
       });
   }
 
+  function handleTaskCompletion(taskId) {
+    const dateString = new Date().toISOString().split("T")[0];
+    if (tasks[taskId].completionDates.includes(dateString)) {
+      return;
+    }
+    apiClient
+      .addTaskCompletion(userId, taskId, dateString)
+      .then((tasks) => {
+        setTasks(tasks);
+      })
+      .catch((error) => {
+        console.log(error);
+        // TODO: handle error
+      });
+  }
+
+  function createTaskComponentFromData(data) {
+    return (
+      <Task
+        key={data.id}
+        id={data.id}
+        archived={data.archived}
+        name={data.name}
+        frequency={data.frequency}
+        completionDates={data.completionDates}
+        editMode={editMode}
+        handleChange={handleChange}
+        handleTaskCompletion={handleTaskCompletion}
+      />
+    );
+  }
+
+  // TODO: use banner here instead of body replace
   if (fetching) {
     body = (
       <div>
@@ -111,44 +158,62 @@ export default function Dashboard(props) {
       </div>
     );
   } else {
-    body = (
-      <div>
-        <div className="buttons-wrapper">
-          <div className="buttons-container">
-            {creating ? null : (
-              <EditModeButtons
-                editMode={editMode}
-                setEditMode={setEditMode}
-                handleSave={handleSave}
-                handleDiscardChanges={handleDiscardChanges}
-              />
-            )}
-            {editMode ? null : (
-              <NewTask
-                creating={creating}
-                setCreating={setCreating}
-                handleCreate={handleCreate}
-              />
-            )}
-          </div>
-        </div>
-        <ul className="cards">
-          {Object.values(tasks).map(
-            ({ id, name, frequency, completionDates }) => (
-              <Task
-                key={id}
-                id={id}
-                name={name}
-                frequency={frequency}
-                completionDates={completionDates}
-                editMode={editMode}
-                handleChange={handleChange}
-              />
-            )
-          )}
-        </ul>
+    const unarchivedTasks = Object.values(tasks).filter(
+      (task) => !task.archived
+    );
+    const archivedTasks = Object.values(tasks).filter((task) => task.archived);
+    const bodyComponents = [];
+    const buttons = [];
+
+    // add edit mode buttons
+    if (!creating) {
+      buttons.push(
+        <EditModeButtons
+          key="editModeButtons"
+          editMode={editMode}
+          setEditMode={setEditMode}
+          handleSave={handleSave}
+          handleDiscardChanges={handleDiscardChanges}
+        />
+      );
+    }
+
+    // add newTask component
+    if (!editMode) {
+      buttons.push(
+        <NewTask
+          key="newTask"
+          creating={creating}
+          setCreating={setCreating}
+          handleCreate={handleCreate}
+        />
+      );
+    }
+
+    bodyComponents.push(
+      <div className="button-wrapper">
+        <div className="button-container">{buttons}</div>
       </div>
     );
+
+    // add tasks list
+    const tasksListComponents = [
+      unarchivedTasks.map(createTaskComponentFromData),
+    ];
+    if (editMode && archivedTasks.length) {
+      tasksListComponents.push(
+        <h3 key="archivedTasks">Archived Tasks</h3>,
+        archivedTasks.map(createTaskComponentFromData)
+      );
+    }
+    bodyComponents.push(
+      <ul className="cards" key="tasksListComponents">
+        {tasksListComponents}
+      </ul>
+    );
+
+    // create body
+    body = <div>{bodyComponents}</div>;
   }
 
   return (

@@ -16,28 +16,30 @@ export default function EditModeButtons(props) {
 
   if (editMode) {
     return (
-      <div>
-        <button variant="contained" color="primary" onClick={onSave}>
-          💾 Save changes
+      <>
+        <button key="save" variant="contained" color="primary" onClick={onSave}>
+          💾 Save Changes
         </button>
         <button
+          key="discard"
           variant="contained"
           color="secondary"
           onClick={onDiscardChanges}
         >
-          🗑 Discard changes
+          🗑 Discard Changes
         </button>
-      </div>
+      </>
     );
   }
 
   return (
     <button
+      key="edit"
       variant="contained"
       color="primary"
       onClick={() => setEditMode(true)}
     >
-      📝 Edit
+      📝 Edit Tasks
     </button>
   );
 }

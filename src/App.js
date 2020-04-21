@@ -1,36 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import './App.css';
-import Home from './components/Home';
-import Dashboard from './components/Dashboard';
-import apiClient from './lib/apiClient';
+import "./App.css";
+import Home from "./components/Home";
+import Dashboard from "./components/Dashboard";
+import apiClient from "./lib/apiClient";
 
 export default function App() {
-  const [userId, setUserId] = useState('lukeskywalker');
+  const [userId, setUserId] = useState("lukeskywalker");
   const [fetching, setFetching] = useState(false);
   const [userName, setUserName] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
   const [tasks, setTasks] = useState({});
 
   useEffect(() => {
-      setFetching(true);
-      setErrorMessage(null);
+    setFetching(true);
+    setErrorMessage(null);
 
-      apiClient.fetchUserData(userId)
-        .then((data) => {
-          setTasks(data.tasks);
-          setFetching(false);
-          setUserName(data.name);
-        })
-        .catch(() => {
-          setFetching(false);
-          setErrorMessage('Error fetching user data');
-        });
+    apiClient
+      .fetchUserData(userId)
+      .then((data) => {
+        setTasks(data.tasks);
+        setFetching(false);
+        setUserName(data.name);
+      })
+      .catch(() => {
+        setFetching(false);
+        setErrorMessage("Error fetching user data");
+      });
   }, []);
 
   return (
@@ -48,7 +45,7 @@ export default function App() {
             />
           </Route>
           <Route path="/">
-            <Home 
+            <Home
               userName={userName}
               fetching={fetching}
               errorMessage={errorMessage}

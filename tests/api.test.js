@@ -151,5 +151,77 @@ describe('API', function () {
             });
         });
     });
+
+
+    describe('addTaskCompletion', function () {
+        describe('success', function () {
+            it('new date', async function () {
+                const {data: originalData} = await axios.get(`${BASEURL}/api/users/lukeskywalker`);
+                const taskId = Object.keys(originalData.tasks)[0];
+                
+                const payload = {
+                    taskId,
+                    completionDate: '2030-02-03'
+                };
+                const response = await axios.post(`${BASEURL}/api/users/lukeskywalker/addTaskCompletion`, payload);
+                assert.equal(response.status, 200);
+                assert.deepEqual(Object.keys(response.data), ['id', 'name', 'created', 'tasks']);
+                assert.equal(response.data.name, 'Luke Skywalker');
+                assert.equal(response.data.id, 'lukeskywalker');
+
+                const actual = response.data.tasks[taskId].completionDates;
+                const expected = [
+                    ...originalData.tasks[taskId].completionDates,
+                    payload.completionDate
+                ];
+                assert.deepEqual(actual, expected);
+            });
+
+            it('date already in list', async function () {
+                const {data: originalData} = await axios.get(`${BASEURL}/api/users/lukeskywalker`);
+                const taskId = Object.keys(originalData.tasks)[0];
+                
+                const payload = {
+                    taskId,
+                    completionDate: '2020-04-10'
+                };
+                const response = await axios.post(`${BASEURL}/api/users/lukeskywalker/addTaskCompletion`, payload);
+                assert.equal(response.status, 200);
+                assert.deepEqual(Object.keys(response.data), ['id', 'name', 'created', 'tasks']);
+                assert.equal(response.data.name, 'Luke Skywalker');
+                assert.equal(response.data.id, 'lukeskywalker');
+
+                const actual = response.data.tasks[taskId].completionDates;
+                const expected = originalData.tasks[taskId].completionDates;
+                assert.deepEqual(actual, expected);
+            });
+        });
+
+        describe('error', function () {
+            it('returns 404 for nonexistent user', async function () {
+                let error = null;
+                try {
+                    await axios.post(`${BASEURL}/api/users/leiaskywalker/addTaskCompletion`, {});
+                } catch (err) {
+                    error = err;
+                }
+                assert.notEqual(error, null);
+                assert.equal(error.response.status, 404);
+            });
+
+            it('returns 404 for nonexistent task', async function () {
+                let error = null;
+                try {
+                    await axios.post(
+                        `${BASEURL}/api/users/lukeskywalker/addTaskCompletion`,
+                        { taskId: 'abc123', completionDate: '2020-04-01' });
+                } catch (err) {
+                    error = err;
+                }
+                assert.notEqual(error, null);
+                assert.equal(error.response.status, 400);
+            });
+        });
+    });
 });
 
