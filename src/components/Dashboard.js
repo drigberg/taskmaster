@@ -119,6 +119,9 @@ export default function Dashboard(props) {
 
     function handleTaskCompletion(taskId) {
         const dateString = (new Date()).toISOString().split('T')[0];
+        if (tasks[taskId].completionDates.includes(dateString)) {
+            return;
+        }
         apiClient.addTaskCompletion(userId, taskId, dateString)
         .then((tasks) => {
             setTasks(tasks);
