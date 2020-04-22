@@ -1,15 +1,8 @@
-
 import React from 'react';
 import PropTypes from 'prop-types';
-import Button from '@material-ui/core/Button';
 
 export default function EditModeButtons(props) {
-    const {
-        editMode,
-        setEditMode,
-        handleSave,
-        handleDiscardChanges
-    } = props;
+    const { editMode, setEditMode, handleSave, handleDiscardChanges } = props;
 
     function onSave() {
         handleSave();
@@ -22,30 +15,33 @@ export default function EditModeButtons(props) {
     }
 
     if (editMode) {
-        return <div>
-            <Button
-                key='save'
-                variant="contained"
-                color="primary"
-                onClick={onSave}
-            >Save Changes</Button>
-            <Button
-                key='discard'
-                variant="contained"
-                color="secondary"
-                onClick={onDiscardChanges}
-            >Discard Changes</Button>
-        </div>;
+        return (
+            <>
+                <button key="save" variant="contained" color="primary" onClick={onSave}>
+          💾 Save Changes
+                </button>
+                <button
+                    key="discard"
+                    variant="contained"
+                    color="secondary"
+                    onClick={onDiscardChanges}
+                >
+          🗑 Discard Changes
+                </button>
+            </>
+        );
     }
 
-    return <div>
-        <Button
-            key='edit'
+    return (
+        <button
+            key="edit"
             variant="contained"
             color="primary"
             onClick={() => setEditMode(true)}
-        >Edit Tasks</Button>
-    </div>;
+        >
+      📝 Edit Tasks
+        </button>
+    );
 }
 
 EditModeButtons.propTypes = {

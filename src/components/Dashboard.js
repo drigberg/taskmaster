@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
@@ -8,14 +7,7 @@ import EditModeButtons from './EditModeButtons';
 import apiClient from '../lib/apiClient';
 
 export default function Dashboard(props) {
-    const {
-        userId,
-        userName,
-        fetching,
-        errorMessage,
-        tasks,
-        setTasks,
-    } = props;
+    const { userId, userName, fetching, errorMessage, tasks, setTasks } = props;
 
     const [creating, setCreating] = useState(false);
     const [editMode, setEditMode] = useState(false);
@@ -27,10 +19,10 @@ export default function Dashboard(props) {
     let body = null;
 
     /**
-     * Prunes updated task data by removing key-value pairs that are equivalent
-     * to original data
-     * @param {Object} updateData - updates by task id
-     */
+   * Prunes updated task data by removing key-value pairs that are equivalent
+   * to original data
+   * @param {Object} updateData - updates by task id
+   */
     function getSimplifiedUpdateData(updateData) {
         const simplified = {};
         Object.entries(updateData).forEach(([taskId, taskUpdateObj]) => {
@@ -39,7 +31,7 @@ export default function Dashboard(props) {
                 if (['id', 'completionDates'].includes(key)) {
                     return;
                 }
-                
+
                 if (value !== tasks[taskId][key]) {
                     taskDiff[key] = value;
                 }
@@ -52,52 +44,54 @@ export default function Dashboard(props) {
     }
 
     /**
-     * Adds new data to update object and reduces to actual diffs
-     * @param {String} taskId 
-     * @param {Object} mutation 
-     */
+   * Adds new data to update object and reduces to actual diffs
+   * @param {String} taskId
+   * @param {Object} mutation
+   */
     function handleChange(taskId, mutation) {
-        // apply mutation to tasksMutations
+    // apply mutation to tasksMutations
         const updatedDataByTaskId = {
             ...tasksMutations,
             [taskId]: {
                 ...tasksMutations[taskId],
-                ...mutation
-            }
+                ...mutation,
+            },
         };
         // resolve updates that were restored to original value
         const simplifiedUpdateData = getSimplifiedUpdateData(updatedDataByTaskId);
         setTasksMutations(simplifiedUpdateData);
-        
+
         // apply updates to tasks
         const updatedTasks = {};
         Object.keys(tasks).forEach((taskId) => {
             const updatesForTask = simplifiedUpdateData[taskId] || {};
             updatedTasks[taskId] = {
                 ...tasks[taskId],
-                ...updatesForTask
+                ...updatesForTask,
             };
         });
         setTasks(updatedTasks);
     }
 
     /**
-     * Apply updates to tasks
-     */
+   * Apply updates to tasks
+   */
     function handleSave() {
-        apiClient.updateTasks(userId, tasks)
-        .then((tasks) => {
-            setTasks(tasks);
-        })
-        .catch((error) => {
-            console.log(error);
-            // TODO: handle error
-        });
+        apiClient
+            .updateTasks(userId, tasks)
+            .then((tasks) => {
+                setTasks(tasks);
+            })
+            .catch((error) => {
+                console.log(error);
+                // TODO: handle error
+            });
     }
 
     function handleDiscardChanges() {
         setTasksMutations({});
-        apiClient.fetchUserData(userId)
+        apiClient
+            .fetchUserData(userId)
             .then((data) => {
                 setTasks(data.tasks);
             })
@@ -107,83 +101,116 @@ export default function Dashboard(props) {
     }
 
     function handleCreate(newTaskData) {
-        apiClient.createTask(userId, newTaskData)
-        .then((tasks) => {
-            setTasks(tasks);
-        })
-        .catch((error) => {
-            console.log(error);
-            // TODO: handle error
-        });
+        apiClient
+            .createTask(userId, newTaskData)
+            .then((tasks) => {
+                setTasks(tasks);
+            })
+            .catch((error) => {
+                console.log(error);
+                // TODO: handle error
+            });
     }
 
     function handleTaskCompletion(taskId) {
-        const dateString = (new Date()).toISOString().split('T')[0];
+        const dateString = new Date().toISOString().split('T')[0];
         if (tasks[taskId].completionDates.includes(dateString)) {
             return;
         }
-        apiClient.addTaskCompletion(userId, taskId, dateString)
-        .then((tasks) => {
-            setTasks(tasks);
-        })
-        .catch((error) => {
-            console.log(error);
-            // TODO: handle error
-        });
+        apiClient
+            .addTaskCompletion(userId, taskId, dateString)
+            .then((tasks) => {
+                setTasks(tasks);
+            })
+            .catch((error) => {
+                console.log(error);
+                // TODO: handle error
+            });
     }
 
     function createTaskComponentFromData(data) {
-        return <Task 
-            key={data.id}
-            id={data.id}
-            archived={data.archived}
-            name={data.name}
-            frequency={data.frequency}
-            completionDates={data.completionDates}
-            editMode={editMode}
-            handleChange={handleChange}
-            handleTaskCompletion={handleTaskCompletion}
-        />;
+        return (
+            <Task
+                key={data.id}
+                id={data.id}
+                archived={data.archived}
+                name={data.name}
+                frequency={data.frequency}
+                completionDates={data.completionDates}
+                editMode={editMode}
+                handleChange={handleChange}
+                handleTaskCompletion={handleTaskCompletion}
+            />
+        );
     }
 
     // TODO: use banner here instead of body replace
     if (fetching) {
-        body = <div><p>Fetching data...</p></div>;
+        body = (
+            <div>
+                <p>Fetching data...</p>
+            </div>
+        );
     } else if (errorMessage) {
-        body = <div><p>Error: {errorMessage}</p></div>;
+        body = (
+            <div>
+                <p>Error: {errorMessage}</p>
+            </div>
+        );
     } else {
-        const unarchivedTasks = Object.values(tasks).filter(task => !task.archived);
-        const archivedTasks = Object.values(tasks).filter(task => task.archived);
+        const unarchivedTasks = Object.values(tasks).filter(
+            (task) => !task.archived
+        );
+        const archivedTasks = Object.values(tasks).filter((task) => task.archived);
         const bodyComponents = [];
+        const buttons = [];
 
         // add edit mode buttons
         if (!creating) {
-            bodyComponents.push(<EditModeButtons
-                key='editModeButtons'
-                editMode={editMode}
-                setEditMode={setEditMode}
-                handleSave={handleSave}
-                handleDiscardChanges={handleDiscardChanges}
-            />);
+            buttons.push(
+                <EditModeButtons
+                    key="editModeButtons"
+                    editMode={editMode}
+                    setEditMode={setEditMode}
+                    handleSave={handleSave}
+                    handleDiscardChanges={handleDiscardChanges}
+                />
+            );
         }
 
         // add newTask component
         if (!editMode) {
-            bodyComponents.push(<NewTask
-                key='newTask'
-                creating={creating}
-                setCreating={setCreating}
-                handleCreate={handleCreate}/>);
+            buttons.push(
+                <NewTask
+                    key="newTask"
+                    creating={creating}
+                    setCreating={setCreating}
+                    handleCreate={handleCreate}
+                />
+            );
         }
+
+        bodyComponents.push(
+            <div className="button-wrapper">
+                <div className="button-container">{buttons}</div>
+            </div>
+        );
 
         // add tasks list
         const tasksListComponents = [
-            unarchivedTasks.map(createTaskComponentFromData)
+            unarchivedTasks.map(createTaskComponentFromData),
         ];
         if (editMode && archivedTasks.length) {
-            tasksListComponents.push(<h3 key='archivedTasks'>Archived Tasks</h3>, archivedTasks.map(createTaskComponentFromData));
+            tasksListComponents.push(
+                <h3 key="archivedTasks">Archived Tasks</h3>,
+                archivedTasks.map(createTaskComponentFromData)
+            );
         }
-        bodyComponents.push(<ul key='tasksListComponents'>{tasksListComponents}</ul>);
+        bodyComponents.push(
+            <ul className="cards" key="tasksListComponents">
+                {tasksListComponents}
+            </ul>
+        );
 
         // create body
         body = <div>{bodyComponents}</div>;
@@ -191,7 +218,7 @@ export default function Dashboard(props) {
 
     return (
         <div>
-            <h2>{userName}’s Tasks</h2>
+            <h1>{userName}’s Tasks</h1>
             {body}
         </div>
     );
@@ -203,5 +230,5 @@ Dashboard.propTypes = {
     errorMessage: PropTypes.string,
     fetching: PropTypes.bool.isRequired,
     tasks: PropTypes.object.isRequired,
-    setTasks: PropTypes.func.isRequired
+    setTasks: PropTypes.func.isRequired,
 };

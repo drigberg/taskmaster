@@ -52,6 +52,7 @@
       "no-unused-vars": ["error", { "ignoreRestSiblings": true }],
       "no-unused-expressions": 2,
       "no-useless-return": 2,
+      "indent": ["error", 4],
       "require-await": 2,
       "no-const-assign": 2,
       "no-dupe-class-members": 2,
