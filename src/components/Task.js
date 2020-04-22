@@ -28,9 +28,9 @@ export default function Task(props) {
         }
 
         // determine health of task based on last completion
-        if (roundedDays > frequency && roundedDays < frequency * 2) {
+        if (roundedDays >= frequency && roundedDays < frequency * 2) {
             className = 'warning';
-        } else {
+        } else if (roundedDays >= frequency * 2) {
             className = 'danger';
         }
     }
