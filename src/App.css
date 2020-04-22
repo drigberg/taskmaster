@@ -150,6 +150,19 @@ label {
   background-color: var(--color-primary);
 }
 
+.card.danger p span:after {
+  content: "❗️";
+  font-size: 30px;
+  position: absolute;
+  top: -30px;
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+
+.card.danger:hover p span:after {
+  opacity: 1;
+}
+
 .edit-task {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
