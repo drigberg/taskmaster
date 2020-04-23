@@ -19,14 +19,18 @@
 - UI posts task completion [done]
 - UI only shows archived tasks in edit mode, lists at bottom, allows un-archiving [done]
 
-## Stage 3: CloudFormation setup
-- set up EC2
-- run hello-world server on EC2
-- server restarts on error
-- storage with DynamoDB
-- authentication with Cognito
+## Stage 3: Infrastructure setup
+- EC2 is defined with infrastructure-as-code template
+- app can be deployed and runs Docker container in EC2
+- server definitely restarts on error
+- DynamoDB table is setup and ready to be integrated
+- full DynamoDB integration
+- logs are pushed to Cloudwatch
+- app has domain name
+- app has SSL certificate
 
 ## Stage 4: Auth
+- authentication with AWS Cognito + Google
 - registration flow
 - login flow
 - logout flow
