@@ -1,15 +1,14 @@
 ## Usage
 
-### Docker + Docker-Compose
+### Local Development
+To run locally, you'll need to install docker and docker-compose.
+
+Commands:
 - `docker-compose build`: build docker container (you should only need to do this once, unless you change the Dockerfile, docker-compose.yml, or package.json)
 - `docker-compose up`: run the app
-- `docker-compose exec app npm run populate-db`: create tables
+- `docker-compose stop`: stop the app
+- `docker-compose exec app npm run db-setup-dev`: create and fill database tables
 
-### NPM
-- `npm i`: install dependencies
-- `npm start`: run the app
-- `npm test`: run tests
-- `npm run lint`: fix style issues
 
 ## Summary
 This app is for tracking recurring chores!
