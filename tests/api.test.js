@@ -2,14 +2,14 @@ const axios = require('axios');
 const assert = require('assert');
 const { describe, it } = require('mocha');
 
-const store = require('../lib/store');
+const db = require('../lib/db');
 
 const BASEURL = 'http://localhost:3002';
 
 describe('API', function () {
     beforeEach(function () {
-        store._clear();
-        store._populate();
+        db._clear();
+        db._populate();
     });
 
     describe('getUserData', function () {

@@ -1,8 +1,9 @@
 ## Usage
 
-### Docker
-- `bash build.sh`: build the docker container (you should only need to do this once)
-- `bash run.sh`: run the project with docker
+### Docker + Docker-Compose
+- `docker-compose build`: build docker container (you should only need to do this once, unless you change the Dockerfile, docker-compose.yml, or package.json)
+- `docker-compose up`: run the app
+- `docker-compose exec app npm run populate-db`: create tables
 
 ### NPM
 - `npm i`: install dependencies
