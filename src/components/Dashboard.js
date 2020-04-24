@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Task from './Task';
@@ -7,7 +7,24 @@ import EditModeButtons from './EditModeButtons';
 import apiClient from '../lib/apiClient';
 
 export default function Dashboard(props) {
-    const { userId, userName, fetching, errorMessage, tasks, setTasks } = props;
+    const { userId, userName, fetching, errorMessage, setFetching, setErrorMessage } = props;
+    const [tasks, setTasks] = useState([]);
+
+    useEffect(() => {
+        setFetching(true);
+        setErrorMessage(null);
+
+        apiClient
+            .fetchTasks()
+            .then((data) => {
+                setTasks(data);
+                setFetching(false);
+            })
+            .catch(() => {
+                setFetching(false);
+                setErrorMessage('Error fetching user data');
+            });
+    }, []);
 
     const [creating, setCreating] = useState(false);
     const [editMode, setEditMode] = useState(false);
@@ -158,10 +175,10 @@ export default function Dashboard(props) {
             </div>
         );
     } else {
-        const unarchivedTasks = Object.values(tasks).filter(
+        const unarchivedTasks = tasks.filter(
             (task) => !task.archived
         );
-        const archivedTasks = Object.values(tasks).filter((task) => task.archived);
+        const archivedTasks = tasks.filter((task) => task.archived);
         const bodyComponents = [];
         const buttons = [];
 
@@ -229,6 +246,6 @@ Dashboard.propTypes = {
     userName: PropTypes.string,
     errorMessage: PropTypes.string,
     fetching: PropTypes.bool.isRequired,
-    tasks: PropTypes.object.isRequired,
-    setTasks: PropTypes.func.isRequired,
+    setFetching: PropTypes.func.isRequired,
+    setErrorMessage: PropTypes.func.isRequired,
 };

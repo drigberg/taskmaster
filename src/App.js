@@ -11,7 +11,6 @@ export default function App() {
     const [fetching, setFetching] = useState(false);
     const [userName, setUserName] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
-    const [tasks, setTasks] = useState({});
 
     useEffect(() => {
         setFetching(true);
@@ -20,7 +19,6 @@ export default function App() {
         apiClient
             .fetchUserData(userId)
             .then((data) => {
-                setTasks(data.tasks);
                 setFetching(false);
                 setUserName(data.name);
             })
@@ -40,8 +38,8 @@ export default function App() {
                             userName={userName}
                             fetching={fetching}
                             errorMessage={errorMessage}
-                            tasks={tasks}
-                            setTasks={setTasks}
+                            setFetching={setFetching}
+                            setErrorMessage={setErrorMessage}
                         />
                     </Route>
                     <Route path="/">

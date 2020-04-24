@@ -22,7 +22,7 @@
 ## Stage 3: Local DB setup
 - Dynamodb container is built with docker-compose [done]
 - Can create tables [done]
-- Can populate tables
+- Can populate tables [done]
 - Can query users
 - Can query tasks
 - Existing API endpoints get data from DynamoDB
