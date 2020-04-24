@@ -20,12 +20,13 @@
 - UI only shows archived tasks in edit mode, lists at bottom, allows un-archiving [done]
 
 ## Stage 3: Local DB setup
-- Dynamodb container is built with docker-compose
-- Can create tables
+- Dynamodb container is built with docker-compose [done]
+- Can create tables [done]
 - Can populate tables
 - Can query users
 - Can query tasks
 - Existing API endpoints get data from DynamoDB
+- UI is revised to call new endpoints
 - Dynamodb is used for tests
 
 ## Stage 4: Infrastructure
