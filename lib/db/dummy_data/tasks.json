@@ -1,6 +1,7 @@
 [
     {
         "id": "3bd78cca-0d08-4188-92b5-adb6d9af5a74",
+        "userId": "lukeskywalker",
         "name": "clean R2D2",
         "frequency": 7,
         "completionDates": [
@@ -12,6 +13,7 @@
     },
     {
         "id": "3b9a45b5-c159-436d-8129-ab2f3eba927d",
+        "userId": "lukeskywalker",
         "name": "clean C3PO",
         "frequency": 7,
         "completionDates": [
@@ -21,6 +23,7 @@
     },
     {
         "id": "49b051ae-edca-45ad-a78f-a18c993a7371",
+        "userId": "lukeskywalker",
         "name": "scrub the Falcon",
         "frequency": 31,
         "completionDates": [
