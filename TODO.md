@@ -23,10 +23,12 @@
 - Dynamodb container is built with docker-compose [done]
 - Can create tables [done]
 - Can populate tables [done]
-- Can query users
-- Can query tasks
+- Can query users [done]
+- Can query tasks [done]
+- Can update tasks
 - Existing API endpoints get data from DynamoDB
 - UI is revised to call new endpoints
+- DB and Model logic is separated
 - Dynamodb is used for tests
 
 ## Stage 4: Infrastructure
