@@ -25,8 +25,8 @@
 - Can populate tables [done]
 - Can query users [done]
 - Can query tasks [done]
-- Can update tasks
-- Existing API endpoints get data from DynamoDB
+- Can update tasks [done]
+- Existing API endpoints interact with DynamoDB
 - UI is revised to call new endpoints
 - DB and Model logic is separated
 - Dynamodb is used for tests
