@@ -1,7 +1,14 @@
-## Usage
+## Summary
+This app is for tracking recurring chores!
 
 ### Local Development
-To run locally, you'll need to install docker and docker-compose.
+First, create a file called `.env` in this directory with the following contents:
+```
+DYNAMODB_URL=http://dynamodb:8000
+AWS_REGION=eu-west-1
+```
+
+To run locally, you'll need to install docker and docker-compose. These tools allow us to spin up a local instance of DynamoDB, as well as to mimic the production environment as closely as possible while developing.
 
 Commands:
 - `docker-compose build`: build docker container (you should only need to do this once, unless you change the Dockerfile, docker-compose.yml, or package.json)
@@ -10,10 +17,6 @@ Commands:
 - `docker-compose exec app npm run db-setup-dev`: create and fill database tables
     - You'll need to run this every time you restart the app, as the local database does not persist after being shut down.
     - NOTE: This command must be run from a separate tab while the app is running!
-
-
-## Summary
-This app is for tracking recurring chores!
 
 ## Notes
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

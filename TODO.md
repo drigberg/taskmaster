@@ -28,8 +28,8 @@
 - Can update tasks [done]
 - Existing API endpoints interact with DynamoDB [done]
 - UI is revised to call new endpoints [done]
-- DB and Model logic is separated
 - Dynamodb is used for tests
+- DB and Model logic is separated
 - DB field names use constants
 
 ## Stage 4: Infrastructure
