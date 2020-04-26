@@ -26,10 +26,11 @@
 - Can query users [done]
 - Can query tasks [done]
 - Can update tasks [done]
-- Existing API endpoints interact with DynamoDB
+- Existing API endpoints interact with DynamoDB [done]
 - UI is revised to call new endpoints
 - DB and Model logic is separated
 - Dynamodb is used for tests
+- DB field names use constants
 
 ## Stage 4: Infrastructure
 - EC2 is defined with infrastructure-as-code template

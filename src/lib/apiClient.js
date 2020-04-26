@@ -38,9 +38,7 @@ class ApiClient {
     }
 
     async updateTasksBulk(payload) {
-        const that = this;
-        const response = await axios.post('/api/tasks/updateBulk', payload);
-        return response.data.map(item => that.parseTask(item));
+        await axios.post('/api/tasks/updateBulk', payload);
     }
 
     async addTaskCompletionDate(taskId, dateString) {
