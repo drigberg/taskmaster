@@ -43,13 +43,13 @@ class ApiClient {
         return response.data.map(item => that.parseTask(item));
     }
 
-    async addTaskCompletion(taskId, dateString) {
+    async addTaskCompletionDate(taskId, dateString) {
         const response = await axios.post(
             `/api/tasks/${taskId}/addCompletionDate`,
             { 
                 completionDate: dateString,
             });
-        return this.parseTasks(response.data);
+        return this.parseTask(response.data);
     }
 }
 
