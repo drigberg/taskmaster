@@ -49,6 +49,7 @@
 - API only exposes data for current user
 
 # Stretch goals
+- API doc generator
 - UI tests
 - task categories: group tasks by root and custom namespaces (household, work, etc)
 - offline mode
