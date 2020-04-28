@@ -28,7 +28,7 @@
 - Can update tasks [done]
 - Existing API endpoints interact with DynamoDB [done]
 - UI is revised to call new endpoints [done]
-- Dynamodb is used for tests
+- Dynamodb is used for tests [done]
 - DB and Model logic is separated
 - DB field names use constants
 
