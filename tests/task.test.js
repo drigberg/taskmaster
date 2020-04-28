@@ -50,7 +50,7 @@ describe('Tasks', function () {
                     name: 'NEWNAME',
                     frequency: 9999
                 };
-                const {data} = await axios.post(`${BASEURL}/api/tasks/${newTask.id}`, updates)
+                const {data} = await axios.post(`${BASEURL}/api/tasks/${newTask.id}`, updates);
                 assert.equal(data.id, newTask.id);
                 assert.equal(data.name, updates.name);
                 assert.equal(data.frequency, updates.frequency);
@@ -68,7 +68,7 @@ describe('Tasks', function () {
                 const updates = {
                     name: 'NEWNAME',
                 };
-                const {data} = await axios.post(`${BASEURL}/api/tasks/${newTask.id}`, updates)
+                const {data} = await axios.post(`${BASEURL}/api/tasks/${newTask.id}`, updates);
                 assert.equal(data.id, newTask.id);
                 assert.equal(data.name, updates.name);
                 assert.equal(data.frequency, testTasks[0].frequency);
