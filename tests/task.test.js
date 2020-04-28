@@ -37,5 +37,46 @@ describe('Tasks', function () {
             });
         });
     });
+
+    describe('POST /api/tasks/:id', function () {
+        describe('success', function () {
+            it('updates name and frequency', async function () {
+                const payload = {
+                    name: testTasks[0].name,
+                    frequency: testTasks[0].frequency
+                };
+                const {data: newTask} = await axios.post(`${BASEURL}/api/tasks`, payload);
+                const updates = {
+                    name: 'NEWNAME',
+                    frequency: 9999
+                };
+                const {data} = await axios.post(`${BASEURL}/api/tasks/${newTask.id}`, updates)
+                assert.equal(data.id, newTask.id);
+                assert.equal(data.name, updates.name);
+                assert.equal(data.frequency, updates.frequency);
+                assert.equal(data.archived, false);
+                assert.deepEqual(data.completionDates, []);
+                assert.deepEqual(Object.keys(data), ['id', 'userId', 'name', 'frequency', 'completionDates', 'archived']);
+            });
+
+            it('updates only name', async function () {
+                const payload = {
+                    name: testTasks[0].name,
+                    frequency: testTasks[0].frequency
+                };
+                const {data: newTask} = await axios.post(`${BASEURL}/api/tasks`, payload);
+                const updates = {
+                    name: 'NEWNAME',
+                };
+                const {data} = await axios.post(`${BASEURL}/api/tasks/${newTask.id}`, updates)
+                assert.equal(data.id, newTask.id);
+                assert.equal(data.name, updates.name);
+                assert.equal(data.frequency, testTasks[0].frequency);
+                assert.equal(data.archived, false);
+                assert.deepEqual(data.completionDates, []);
+                assert.deepEqual(Object.keys(data), ['id', 'userId', 'name', 'frequency', 'completionDates', 'archived']);
+            });
+        });
+    });
 });
 
