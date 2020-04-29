@@ -31,15 +31,12 @@
 - Dynamodb is used for tests [done]
 - DB and Model logic is separated [done]
 
-## Stage 4: Docker cleanup
-Ideas:
-- If/Else in Dockerfile based on ENV variable
-- Move command to docker-compose, allow AWS to specify command in production
-Todo:
-- in development, runs UI in development mode
-- in testing, doesn't start server or UI
-- in production, builds UI and runs from static files
-- very basic validation for existing API routes
+## Stage 4: Environment cleanup
+- switch to dotenv CLI
+- use environment variables for AWS instead of config.update()
+- If/Else in Dockerfile based on ENV variable:
+    - in development/testing, runs UI in development mode
+    - in production, builds UI and runs from static files
 
 ## Stage 5: Infrastructure
 - EC2 is defined with infrastructure-as-code template

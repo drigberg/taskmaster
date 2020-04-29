@@ -20,7 +20,7 @@
     "mocha": "^7.1.1"
   },
   "scripts": {
-    "start": "npm-run-all --parallel start-api start-ui",
+    "start:dev": "npm-run-all --parallel start-api start-ui",
     "lint": "npm run lint-api; npm run lint-ui",
     "build": "react-scripts build",
     "create-tables": "node ./lib/db/scripts/create_tables.js",
@@ -33,7 +33,7 @@
     "lint-api": "eslint ./lib ./tests --fix",
     "lint-ui": "eslint ./src --fix",
     "test": "npm run test-api",
-    "test-api": "TESTING=TRUE mocha --file tests/setup-tests.js tests/*.test.js",
+    "test-api": "ENV=TEST mocha --file tests/setup-tests.js tests/*.test.js",
     "test-ui": "react-scripts test"
   },
   "eslintConfig": {
