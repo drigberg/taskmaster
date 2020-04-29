@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Task from './Task';
@@ -7,22 +7,46 @@ import EditModeButtons from './EditModeButtons';
 import apiClient from '../lib/apiClient';
 
 export default function Dashboard(props) {
-    const { userId, userName, fetching, errorMessage, tasks, setTasks } = props;
-
+    const { userId, userName, fetching, errorMessage, setFetching, setErrorMessage } = props;
+    const [tasksById, setTasksById] = useState([]);
     const [creating, setCreating] = useState(false);
     const [editMode, setEditMode] = useState(false);
 
     // tasksMutations is the simplified set of mutations to be provided
-    // in the POST call to updateTasks
+    // in the POST call to updateTasksBulk
     const [tasksMutations, setTasksMutations] = useState({});
 
-    let body = null;
+    useEffect(() => {
+        fetchTasks();
+    }, []);
 
     /**
-   * Prunes updated task data by removing key-value pairs that are equivalent
-   * to original data
-   * @param {Object} updateData - updates by task id
-   */
+     * Fetches tasks
+     */
+    function fetchTasks() {
+        setFetching(true);
+        setErrorMessage(null);
+        return apiClient
+            .fetchTasks()
+            .then((items) => {
+                setFetching(false);
+                const itemsById = items.reduce((acc, item) => {
+                    acc[item.id] = item;
+                    return acc;
+                }, {});
+                setTasksById(itemsById);
+            })
+            .catch((error) => {
+                setFetching(false);
+                setErrorMessage(`Error: ${error}`);
+            }); 
+    }
+
+    /**
+     * Prunes updated task data by removing key-value pairs that are equivalent
+     * to original data
+     * @param {Object} updateData - updates by task id
+     */
     function getSimplifiedUpdateData(updateData) {
         const simplified = {};
         Object.entries(updateData).forEach(([taskId, taskUpdateObj]) => {
@@ -32,7 +56,7 @@ export default function Dashboard(props) {
                     return;
                 }
 
-                if (value !== tasks[taskId][key]) {
+                if (value !== tasksById[taskId][key]) {
                     taskDiff[key] = value;
                 }
             });
@@ -44,10 +68,10 @@ export default function Dashboard(props) {
     }
 
     /**
-   * Adds new data to update object and reduces to actual diffs
-   * @param {String} taskId
-   * @param {Object} mutation
-   */
+     * Adds new data to update object and reduces to actual diffs
+     * @param {String} taskId
+     * @param {Object} mutation
+     */
     function handleChange(taskId, mutation) {
     // apply mutation to tasksMutations
         const updatedDataByTaskId = {
@@ -62,70 +86,47 @@ export default function Dashboard(props) {
         setTasksMutations(simplifiedUpdateData);
 
         // apply updates to tasks
-        const updatedTasks = {};
-        Object.keys(tasks).forEach((taskId) => {
+        const updatedTasksById = {};
+        Object.keys(tasksById).forEach((taskId) => {
             const updatesForTask = simplifiedUpdateData[taskId] || {};
-            updatedTasks[taskId] = {
-                ...tasks[taskId],
+            updatedTasksById[taskId] = {
+                ...tasksById[taskId],
                 ...updatesForTask,
             };
         });
-        setTasks(updatedTasks);
+        setTasksById(updatedTasksById);
     }
 
     /**
-   * Apply updates to tasks
-   */
+     * Apply updates to tasks
+     */
     function handleSave() {
+        setFetching(true);
         apiClient
-            .updateTasks(userId, tasks)
-            .then((tasks) => {
-                setTasks(tasks);
-            })
-            .catch((error) => {
-                console.log(error);
-                // TODO: handle error
-            });
+            .updateTasksBulk(tasksById)
+            .then(() => fetchTasks());
     }
 
     function handleDiscardChanges() {
         setTasksMutations({});
-        apiClient
-            .fetchUserData(userId)
-            .then((data) => {
-                setTasks(data.tasks);
-            })
-            .catch(() => {
-                // TODO: handle error
-            });
+        setFetching(true);
+        fetchTasks();
     }
 
     function handleCreate(newTaskData) {
         apiClient
-            .createTask(userId, newTaskData)
-            .then((tasks) => {
-                setTasks(tasks);
-            })
-            .catch((error) => {
-                console.log(error);
-                // TODO: handle error
-            });
+            .createTask(newTaskData)
+            .then(() => fetchTasks());
     }
 
     function handleTaskCompletion(taskId) {
         const dateString = new Date().toISOString().split('T')[0];
-        if (tasks[taskId].completionDates.includes(dateString)) {
+        if (tasksById[taskId].completionDates.includes(dateString)) {
             return;
         }
         apiClient
-            .addTaskCompletion(userId, taskId, dateString)
-            .then((tasks) => {
-                setTasks(tasks);
-            })
-            .catch((error) => {
-                console.log(error);
-                // TODO: handle error
-            });
+            .addTaskCompletionDate(taskId, dateString)
+            .then(() => fetchTasks());
     }
 
     function createTaskComponentFromData(data) {
@@ -144,6 +145,8 @@ export default function Dashboard(props) {
         );
     }
 
+    let body = null;
+
     // TODO: use banner here instead of body replace
     if (fetching) {
         body = (
@@ -158,10 +161,10 @@ export default function Dashboard(props) {
             </div>
         );
     } else {
-        const unarchivedTasks = Object.values(tasks).filter(
+        const unarchivedTasks = Object.values(tasksById).filter(
             (task) => !task.archived
         );
-        const archivedTasks = Object.values(tasks).filter((task) => task.archived);
+        const archivedTasks = Object.values(tasksById).filter((task) => task.archived);
         const bodyComponents = [];
         const buttons = [];
 
@@ -229,6 +232,6 @@ Dashboard.propTypes = {
     userName: PropTypes.string,
     errorMessage: PropTypes.string,
     fetching: PropTypes.bool.isRequired,
-    tasks: PropTypes.object.isRequired,
-    setTasks: PropTypes.func.isRequired,
+    setFetching: PropTypes.func.isRequired,
+    setErrorMessage: PropTypes.func.isRequired,
 };

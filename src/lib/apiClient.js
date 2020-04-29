@@ -2,46 +2,52 @@
 import axios from 'axios';
 
 class ApiClient {
-    parseTasks(tasks) {
-        return Object.entries(tasks).reduce((acc, [id, task]) => {
-            acc[id] = {
-                id: task.id,
-                name: task.name,
-                frequency: task.frequency,
-                archived: task.archived,
-                completionDates: task.completionDates
-            };
-            return acc;
-        }, {});
+    parseTask(data) {
+        return {
+            id: data.id,
+            name: data.name,
+            frequency: data.frequency,
+            archived: data.archived,
+            completionDates: data.completionDates
+        };
     }
 
     async fetchUserData(userId) {
         const response = await axios.get(`/api/users/${userId}`);
         return {
+            id: response.data.id,
             name: response.data.name,
             created: response.data.created,
-            tasks: this.parseTasks(response.data.tasks)
         };
     }
 
-    async createTask(userId, payload) {
-        const response = await axios.post(`/api/users/${userId}/createTask`, payload);
-        return this.parseTasks(response.data.tasks);
+    async fetchTasks() {
+        const that = this;
+        const response = await axios.get('/api/tasks');
+        return response.data.map(item => that.parseTask(item));
     }
 
-    async updateTasks(userId, payload) {
-        const response = await axios.post(`/api/users/${userId}/updateTasks`, payload);
-        return this.parseTasks(response.data.tasks);
+    async createTask(payload) {
+        const response = await axios.post('/api/tasks', payload);
+        return this.parseTask(response.data);
     }
 
-    async addTaskCompletion(userId, taskId, dateString) {
+    async updateTask(taskId, payload) {
+        const response = await axios.post(`/api/tasks/${taskId}`, payload);
+        return this.parseTask(response.data);
+    }
+
+    async updateTasksBulk(payload) {
+        await axios.post('/api/tasks/updateBulk', payload);
+    }
+
+    async addTaskCompletionDate(taskId, dateString) {
         const response = await axios.post(
-            `/api/users/${userId}/addTaskCompletion`,
+            `/api/tasks/${taskId}/addCompletionDate`,
             { 
                 completionDate: dateString,
-                taskId,
             });
-        return this.parseTasks(response.data.tasks);
+        return this.parseTask(response.data);
     }
 }
 

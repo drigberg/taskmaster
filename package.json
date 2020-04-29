@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "aws-sdk": "^2.661.0",
     "axios": "^0.19.2",
+    "dotenv": "^8.2.0",
     "nodemon": "^2.0.2",
     "npm-run-all": "^4.1.5",
     "react": "^16.13.1",
@@ -21,12 +23,17 @@
     "start": "npm-run-all --parallel start-api start-ui",
     "lint": "npm run lint-api; npm run lint-ui",
     "build": "react-scripts build",
+    "create-tables": "node ./lib/db/scripts/create_tables.js",
+    "populate-tables": "node ./lib/db/scripts/populate_with_dummy_data.js",
+    "setup-db:prod": "npm run create-tables",
+    "setup-db:test": "npm run create-tables",
+    "setup-db:dev": "npm run create-tables; npm run populate-tables",
     "start-api": "nodemon ./lib/server.js",
     "start-ui": "react-scripts start",
     "lint-api": "eslint ./lib ./tests --fix",
     "lint-ui": "eslint ./src --fix",
     "test": "npm run test-api",
-    "test-api": "mocha test --file tests/setup-tests.js tests/*.test.js",
+    "test-api": "TESTING=TRUE mocha --file tests/setup-tests.js tests/*.test.js",
     "test-ui": "react-scripts test"
   },
   "eslintConfig": {

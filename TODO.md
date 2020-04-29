@@ -19,17 +19,38 @@
 - UI posts task completion [done]
 - UI only shows archived tasks in edit mode, lists at bottom, allows un-archiving [done]
 
-## Stage 3: Infrastructure setup
+## Stage 3: Local DB setup [done]
+- Dynamodb container is built with docker-compose [done]
+- Can create tables [done]
+- Can populate tables [done]
+- Can query users [done]
+- Can query tasks [done]
+- Can update tasks [done]
+- Existing API endpoints interact with DynamoDB [done]
+- UI is revised to call new endpoints [done]
+- Dynamodb is used for tests [done]
+- DB and Model logic is separated [done]
+
+## Stage 4: Docker cleanup
+Ideas:
+- If/Else in Dockerfile based on ENV variable
+- Move command to docker-compose, allow AWS to specify command in production
+Todo:
+- in development, runs UI in development mode
+- in testing, doesn't start server or UI
+- in production, builds UI and runs from static files
+- very basic validation for existing API routes
+
+## Stage 5: Infrastructure
 - EC2 is defined with infrastructure-as-code template
 - app can be deployed and runs Docker container in EC2
 - server definitely restarts on error
-- DynamoDB table is setup and ready to be integrated
-- full DynamoDB integration
+- DynamoDB works in production
 - logs are pushed to Cloudwatch
 - app has domain name
 - app has SSL certificate
 
-## Stage 4: Auth
+## Stage 6: Auth
 - authentication with AWS Cognito + Google
 - registration flow
 - login flow
@@ -37,8 +58,12 @@
 - API only exposes data for current user
 
 # Stretch goals
+- error handling
+- API test coverage
+- API doc generator
 - UI tests
 - task categories: group tasks by root and custom namespaces (household, work, etc)
 - offline mode
 - PWA
 - GraphQL
+- DB field names use constants

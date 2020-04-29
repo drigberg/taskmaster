@@ -1,31 +1,5 @@
 # App design
 
-## API
-### GET/users/:id
-Exposes all data for user
-
-Request url: GET /api/users/lukeskywalker
-Response:
-``` json
-{
-    "id": "lukeskywalker",
-    "name": "Luke Skywalker",
-    "created": "2020-03-01",
-    "tasks": [
-        {
-            "name": "clean R2D2",
-            "frequency": 7,
-            "completionDates": [
-                "2020-04-02",
-                "2020-04-05",
-                "2020-04-10"
-            ],
-            "archived": false
-        }
-    ]
-}
-```
-
 ## UI
 
 ### Landing page (/)
@@ -42,11 +16,11 @@ Lists tasks for user.
 
 Features:
 - Tasks are listed, and are differentiated by lateness
+- "Create" button allows the user to create a new task
 - "Edit mode" button
-    - Edit mode allows creation of new tasks
     - Edit mode allows updates to task properties
     - Can save or discard all changes
-    - Also shows archived tasks
+    - Shows archived tasks
 
 ## Infrastracture (not implemented yet)
 

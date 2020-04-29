@@ -1,12 +1,10 @@
 FROM node:12
 
 RUN mkdir /app
-COPY package.json package-lock.json /app/
+COPY .env package.json package-lock.json lib public src tests /app/
 WORKDIR /app
 RUN npm install
 
-COPY . /app
-
 EXPOSE 3000
 
-CMD ["npm", "start"]
+CMD npm start
