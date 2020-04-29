@@ -4,8 +4,7 @@ const fs = require('fs');
 const { describe, it } = require('mocha');
 const path = require('path');
 
-const {Task} = require('../lib/models/task');
-const {User} = require('../lib/models/user');
+const {Task, User} = require('../lib/models');
 
 const BASEURL = 'http://localhost:3002';
 
@@ -40,21 +39,22 @@ describe('Tasks', function () {
 
     describe('POST /api/tasks/:id', function () {
         describe('success', function () {
-            it('updates name and frequency', async function () {
+            it('updates all possible properties', async function () {
                 const payload = {
                     name: testTasks[0].name,
-                    frequency: testTasks[0].frequency
+                    frequency: testTasks[0].frequency,
                 };
                 const {data: newTask} = await axios.post(`${BASEURL}/api/tasks`, payload);
                 const updates = {
                     name: 'NEWNAME',
-                    frequency: 9999
+                    frequency: 9999,
+                    archived: true
                 };
                 const {data} = await axios.post(`${BASEURL}/api/tasks/${newTask.id}`, updates);
                 assert.equal(data.id, newTask.id);
                 assert.equal(data.name, updates.name);
                 assert.equal(data.frequency, updates.frequency);
-                assert.equal(data.archived, false);
+                assert.equal(data.archived, true);
                 assert.deepEqual(data.completionDates, []);
                 assert.deepEqual(Object.keys(data), ['id', 'userId', 'name', 'frequency', 'completionDates', 'archived']);
             });

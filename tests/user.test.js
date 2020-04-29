@@ -4,7 +4,7 @@ const fs = require('fs');
 const { describe, it } = require('mocha');
 const path = require('path');
 
-const {User} = require('../lib/models/user');
+const {User} = require('../lib/models');
 
 const BASEURL = 'http://localhost:3002';
 
