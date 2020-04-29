@@ -24,7 +24,7 @@
     "lint": "npm run lint-api; npm run lint-ui",
     "build": "react-scripts build",
     "create-tables": "node ./lib/db/scripts/create_tables.js",
-    "populate-tables": "node ./lib/dgb/scripts/populate_with_dummy_data.js",
+    "populate-tables": "node ./lib/db/scripts/populate_with_dummy_data.js",
     "setup-db:prod": "npm run create-tables",
     "setup-db:test": "npm run create-tables",
     "setup-db:dev": "npm run create-tables; npm run populate-tables",

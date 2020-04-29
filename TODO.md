@@ -19,7 +19,7 @@
 - UI posts task completion [done]
 - UI only shows archived tasks in edit mode, lists at bottom, allows un-archiving [done]
 
-## Stage 3: Local DB setup
+## Stage 3: Local DB setup [done]
 - Dynamodb container is built with docker-compose [done]
 - Can create tables [done]
 - Can populate tables [done]
@@ -29,8 +29,7 @@
 - Existing API endpoints interact with DynamoDB [done]
 - UI is revised to call new endpoints [done]
 - Dynamodb is used for tests [done]
-- DB and Model logic is separated
-- DB field names use constants
+- DB and Model logic is separated [done]
 
 ## Stage 4: Docker cleanup
 Ideas:
@@ -59,9 +58,12 @@ Todo:
 - API only exposes data for current user
 
 # Stretch goals
+- error handling
+- API test coverage
 - API doc generator
 - UI tests
 - task categories: group tasks by root and custom namespaces (household, work, etc)
 - offline mode
 - PWA
 - GraphQL
+- DB field names use constants
