@@ -41,7 +41,7 @@ Todo:
 - in production, builds UI and runs from static files
 - very basic validation for existing API routes
 
-## Stage 4: Infrastructure
+## Stage 5: Infrastructure
 - EC2 is defined with infrastructure-as-code template
 - app can be deployed and runs Docker container in EC2
 - server definitely restarts on error
@@ -50,7 +50,7 @@ Todo:
 - app has domain name
 - app has SSL certificate
 
-## Stage 5: Auth
+## Stage 6: Auth
 - authentication with AWS Cognito + Google
 - registration flow
 - login flow
