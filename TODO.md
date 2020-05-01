@@ -31,12 +31,9 @@
 - Dynamodb is used for tests [done]
 - DB and Model logic is separated [done]
 
-## Stage 4: Environment cleanup
-- switch to dotenv CLI
-- use environment variables for AWS instead of config.update()
-- If/Else in Dockerfile based on ENV variable:
-    - in development/testing, runs UI in development mode
-    - in production, builds UI and runs from static files
+## Stage 4: Environment cleanup [done]
+- switch to dotenv CLI [done]
+- use environment variables for AWS instead of config.update() [done]
 
 ## Stage 5: Infrastructure
 - EC2 is defined with infrastructure-as-code template
@@ -46,21 +43,30 @@
 - logs are pushed to Cloudwatch
 - app has domain name
 - app has SSL certificate
+- If/Else in Dockerfile based on ENV variable:
+    - in development/testing, runs UI in development mode
+    - in production, builds UI and runs from static files
 
 ## Stage 6: Auth
-- authentication with AWS Cognito + Google
+- Google authentication using AWS Cognito or Amplify
 - registration flow
 - login flow
 - logout flow
 - API only exposes data for current user
 
 # Stretch goals
-- error handling
-- API test coverage
+## Features
 - API doc generator
 - UI tests
 - task categories: group tasks by root and custom namespaces (household, work, etc)
 - offline mode
 - PWA
 - GraphQL
+
+## Best practices
+- use schemas in populate-db script
+- use AWS dynamodb converter in schemas (https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/Converter.html)
+- error handling with nice error class
+- API test coverage
+- use middleware for request context
 - DB field names use constants

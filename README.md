@@ -2,11 +2,7 @@
 This app is for tracking recurring chores!
 
 ### Local Development
-First, create a file called `.env` in this directory with the following contents:
-```
-DYNAMODB_URL=http://dynamodb:8000
-AWS_REGION=eu-west-1
-```
+First, create a file called `.env` in this directory using the contents found in the `.env.sample` file. No access keys are needed for local development.
 
 To run locally, you'll need to install docker and docker-compose. These tools allow us to spin up a local instance of DynamoDB, as well as to mimic the production environment as closely as possible while developing.
 
