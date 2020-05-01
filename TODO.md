@@ -36,16 +36,16 @@
 - use environment variables for AWS instead of config.update() [done]
 
 ## Stage 5: Infrastructure
-- EC2 is defined with infrastructure-as-code template
-- app can be deployed and runs Docker container in EC2
-- server definitely restarts on error
-- DynamoDB works in production
+- Bash script to build Docker image for production and push to ecs
+- Task definition is set up, with documentation on how to access it
+- Cluster is setup, with documentation on how to access it
+- DynamoDB is setup, with documentation on how to access it
+- EC2 has permissions and environment variables for accessing dynamodb
 - logs are pushed to Cloudwatch
-- app has domain name
-- app has SSL certificate
 - If/Else in Dockerfile based on ENV variable:
     - in development/testing, runs UI in development mode
     - in production, builds UI and runs from static files
+- All entities have meaningful permissions, which ideally are saved in repo as policy documents
 
 ## Stage 6: Auth
 - Google authentication using AWS Cognito or Amplify
@@ -56,7 +56,9 @@
 
 # Stretch goals
 ## Features
-- API doc generator
+- app has domain name
+- app has SSL certificate
+- Minimal API doc generator (markdown)
 - UI tests
 - task categories: group tasks by root and custom namespaces (household, work, etc)
 - offline mode
