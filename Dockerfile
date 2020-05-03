@@ -6,6 +6,7 @@ WORKDIR /app
 
 ARG ENV=DEV
 RUN if [ "$ENV" = "PROD" ] ; then npm install --production; else npm install; fi
+RUN if [ "$ENV" = "PROD"] ; then npm run build; fi
 
 EXPOSE 3000
 
