@@ -20,7 +20,8 @@
     "mocha": "^7.1.1"
   },
   "scripts": {
-    "start:dev": "dotenv npm-run-all -- --parallel start-api start-ui",
+    "start:prod": "npm run start-api",
+    "start:dev": "npm-run-all --parallel start-api start-ui",
     "lint": "npm run lint-api; npm run lint-ui",
     "build": "react-scripts build",
     "create-tables": "dotenv node ./lib/db/scripts/create_tables.js",
@@ -28,7 +29,7 @@
     "setup-db:prod": "npm run create-tables",
     "setup-db:test": "npm run create-tables",
     "setup-db:dev": "npm run create-tables; npm run populate-tables",
-    "start-api": "nodemon ./lib/server.js",
+    "start-api": "dotenv nodemon ./lib/server.js",
     "start-ui": "react-scripts start",
     "lint-api": "eslint ./lib ./tests --fix",
     "lint-ui": "eslint ./src --fix",
