@@ -20,7 +20,7 @@
     "mocha": "^7.1.1"
   },
   "scripts": {
-    "start:dev": "dotenv npm-run-all --parallel start-api start-ui",
+    "start:dev": "dotenv npm-run-all -- --parallel start-api start-ui",
     "lint": "npm run lint-api; npm run lint-ui",
     "build": "react-scripts build",
     "create-tables": "dotenv node ./lib/db/scripts/create_tables.js",
