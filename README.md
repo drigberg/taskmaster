@@ -18,5 +18,22 @@ Commands:
 To run automated tests, run `bash tests/run_tests.sh`.
 NOTE: be sure that the app is not already running with docker-compose.
 
+
+### Deployment
+#### Infrastructure
+1. Create an ECR repository (ours is named taskmaster-server)
+2. Create a task definition for the container
+3. Create an ECS cluster with a t2.micro EC2 instance
+4. Create a new service for the task definition, using the new cluster
+
+#### Deploying new versions
+
+1. Build the Docker image: `docker-build.sh`
+2. Get the ecr login command: `aws ecr get-login --no-include-email --region [region]`
+3. Run the returned login command
+4. Fetch the ECR repository URI from the AWS console 
+5. Tag the Docker image: `docker tag taskmaster:latest [REPOSITORY_URI]:latest`
+6. Push the image to ecr with `docker push [REPOSITORY_URI]:latest`
+
 ## Notes
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

@@ -22,10 +22,16 @@ Features:
     - Can save or discard all changes
     - Shows archived tasks
 
-## Infrastracture (not implemented yet)
+## Infrastracture
 
-- Infrastructure managed with AWS Cloudformation
+### Complete
+
+- Docker containers are managed with an ECS repository in the us-east-1 region
+- Cluster, task definition, and service are defined in ECS
+- DynamoDB container is managed with docker-compose for local development and testing
+- DynamoDB tables are defined in AWS console
+
+### Incomplete
 - App builds and deploys with AWS CodePipeline
 - Database: DynamoDB, with backup enabled
-- DynamoDB container is managed with docker-compose for local development and testing
 - Authentication with AWS Cognito + Google (https://docs.aws.amazon.com/cognito/latest/developerguide/google.html)

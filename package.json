@@ -1,27 +1,27 @@
 {
-  "name": "scholar-hub",
+  "name": "taskmaster",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "aws-sdk": "^2.661.0",
     "axios": "^0.19.2",
-    "dotenv-cli": "^3.1.0",
-    "nodemon": "^2.0.2",
-    "npm-run-all": "^4.1.5",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.0"
+    "react-router-dom": "^5.1.2"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
     "chai": "^4.2.0",
+    "dotenv-cli": "^3.1.0",
     "eslint": "^6.8.0",
-    "mocha": "^7.1.1"
+    "mocha": "^7.1.1",
+    "nodemon": "^2.0.2",
+    "npm-run-all": "^4.1.5",
+    "react-scripts": "3.4.0"
   },
   "scripts": {
-    "start:prod": "npm run start-api",
-    "start:dev": "npm-run-all --parallel start-api start-ui",
+    "start:prod": "node ./lib/server.js",
+    "start:dev": "npm-run-all --parallel start-api:dev start-ui:dev",
     "lint": "npm run lint-api; npm run lint-ui",
     "build": "react-scripts build",
     "create-tables": "dotenv node ./lib/db/scripts/create_tables.js",
@@ -29,8 +29,8 @@
     "setup-db:prod": "npm run create-tables",
     "setup-db:test": "npm run create-tables",
     "setup-db:dev": "npm run create-tables; npm run populate-tables",
-    "start-api": "dotenv nodemon ./lib/server.js",
-    "start-ui": "react-scripts start",
+    "start-api:dev": "dotenv node ./lib/server.js",
+    "start-ui:dev": "react-scripts start",
     "lint-api": "eslint ./lib ./tests --fix",
     "lint-ui": "eslint ./src --fix",
     "test": "npm run test-api",
