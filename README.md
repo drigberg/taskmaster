@@ -28,7 +28,7 @@ NOTE: be sure that the app is not already running with docker-compose.
 
 #### Deploying new versions
 
-1. Build the Docker image: `docker-build.sh`
+1. Build the Docker image: `bash docker-build.sh`
 2. Get the ecr login command: `aws ecr get-login --no-include-email --region [region]`
 3. Run the returned login command
 4. Fetch the ECR repository URI from the AWS console 
