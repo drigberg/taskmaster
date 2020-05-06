@@ -22,9 +22,11 @@ NOTE: be sure that the app is not already running with docker-compose.
 ### Deployment
 #### Infrastructure
 1. Create an ECR repository (ours is named taskmaster-server)
-2. Create a task definition for the container
-3. Create an ECS cluster with a t2.micro EC2 instance
-4. Create a new service for the task definition, using the new cluster
+2. Create an ECS service role for the task, with read-write permissions for Dynamodb and Cloudwatch
+3. Create a task definition for the container using the new role
+4. Create an ECS cluster with a t2.micro EC2 instance
+5. Create a new service for the task definition, using the new cluster
+
 
 #### Deploying new versions
 
@@ -34,6 +36,8 @@ NOTE: be sure that the app is not already running with docker-compose.
 4. Fetch the ECR repository URI from the AWS console 
 5. Tag the Docker image: `docker tag taskmaster:latest [REPOSITORY_URI]:latest`
 6. Push the image to ecr with `docker push [REPOSITORY_URI]:latest`
+7. Create a new revision for the task using the updated image
+8. Update the running service to use the new task revision
 
 ## Notes
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
