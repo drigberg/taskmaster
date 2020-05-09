@@ -18,10 +18,16 @@ export default function AppRouter() {
     const { code: authorizationCode } = useQuery();
     // const [loggedIn, setLoggedIn] = useState(false);
     const [idToken, setIdToken] = useState('');
-    const [userId, setUserId] = useState('lukeskywalker');
+    const [userId, setUserId] = useState('');
     const [fetching, setFetching] = useState(false);
     const [userName, setUserName] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
+
+    function onLogout() {
+        setUserName(null);
+        setUserId('');
+        setIdToken('');
+    }
 
     async function getToken() {
         let idToken;
@@ -71,12 +77,13 @@ export default function AppRouter() {
                 redirectToHostedSigninPage();
                 return null;
             }}/>
-            <Route exact path="/">
-                <Home
-                    userName={userName}
-                    fetching={fetching}
-                    errorMessage={errorMessage}
-                />
+            <Route exact path="/" render={(props) => (<Home
+                {...props}
+                onLogout={onLogout}
+                userName={userName}
+                fetching={fetching}
+                errorMessage={errorMessage}
+            />)}>
             </Route>
             <Route exact path="/dashboard" render={(props) => (<Dashboard
                 {...props}

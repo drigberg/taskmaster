@@ -8,6 +8,11 @@ class ApiClient {
         this.idToken = '';
     }
 
+    async logout() {
+        this.idToken = '';
+        await axios.get('/api/auth/logout');
+    }
+
     async getIdToken(authorizationCode) {
         const response = await axios.get('/api/auth/getToken', {
             headers: {

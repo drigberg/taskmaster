@@ -47,22 +47,25 @@
     - in production, builds UI and runs from static files [done]
 - All entities have meaningful permissions, which ideally are saved in repo as policy documents [done]
 
-## Stage 6: Auth
+## Stage 6: Auth [done]
 - Google authentication using AWS Cognito or Amplify [done]
 - can register / login [done]
 - id token is reused if found in local storage [done]
 - sensible auth flow in frontend and backend [done]
 - all routes use authentication and authorization [done]
 - All new secrets are stored in .env [done]
-- can logout with sensible flow
+- can logout with sensible flow [done]
 
 ## Stage 7: Post-Auth Cleanup
 - frequency string/number bug is solved
+- revise UI for logged-in vs logged-out
 - smooth login redirect
+- remove authorization code from url after authenticating
 - figure out correct cors policy
 - figure out SameSite attribute for cookies
 
 ## Stage 7: Deployment with Auth
+- all new environment variables are in AWS
 - app has domain name
 - app has SSL certificate
 - app v1.0 is deployed
