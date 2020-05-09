@@ -1,14 +1,12 @@
 
 import React from 'react';
 
-class Home extends React.Component {
-    render() {
-        return (<div>
-            <h1>Task Master</h1>
-            <h2>Welcome, Luke Skywalker!</h2>
-            <a href="/dashboard/"><button>Dashboard</button></a>
-        </div>);
-    }
+export default function Home() {
+    const username = 'LukeSkywalker';
+    return (<div>
+        <h1>Task Master</h1>
+        <h2>Welcome, {username}!</h2>
+        <a href="/login/"><button>Sign In / Register</button></a>
+        <a href="/dashboard/"><button>Dashboard</button></a>
+    </div>);
 }
-
-export default Home;

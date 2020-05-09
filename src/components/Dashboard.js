@@ -7,7 +7,7 @@ import EditModeButtons from './EditModeButtons';
 import apiClient from '../lib/apiClient';
 
 export default function Dashboard(props) {
-    const { userId, userName, fetching, errorMessage, setFetching, setErrorMessage } = props;
+    const { userName, fetching, errorMessage, setFetching, setErrorMessage } = props;
     const [tasksById, setTasksById] = useState([]);
     const [creating, setCreating] = useState(false);
     const [editMode, setEditMode] = useState(false);
@@ -17,8 +17,10 @@ export default function Dashboard(props) {
     const [tasksMutations, setTasksMutations] = useState({});
 
     useEffect(() => {
-        fetchTasks();
-    }, []);
+        if (userName) {
+            fetchTasks();
+        }
+    }, [userName]);
 
     /**
      * Fetches tasks
@@ -160,12 +162,20 @@ export default function Dashboard(props) {
                 <p>Error: {errorMessage}</p>
             </div>
         );
+    } else if (!userName) {
+        body = (
+            <div>
+                <p>No data yet</p>
+            </div>
+        );
     } else {
         const unarchivedTasks = Object.values(tasksById).filter(
             (task) => !task.archived
         );
         const archivedTasks = Object.values(tasksById).filter((task) => task.archived);
-        const bodyComponents = [];
+        const bodyComponents = [
+            (<h1 key='username'>{userName}’s Tasks</h1>)
+        ];
         const buttons = [];
 
         // add edit mode buttons
@@ -194,7 +204,7 @@ export default function Dashboard(props) {
         }
 
         bodyComponents.push(
-            <div className="button-wrapper">
+            <div key='button-wrapper' className="button-wrapper">
                 <div className="button-container">{buttons}</div>
             </div>
         );
@@ -216,12 +226,11 @@ export default function Dashboard(props) {
         );
 
         // create body
-        body = <div>{bodyComponents}</div>;
+        body = <div key='body-div'>{bodyComponents}</div>;
     }
 
     return (
         <div>
-            <h1>{userName}’s Tasks</h1>
             {body}
         </div>
     );

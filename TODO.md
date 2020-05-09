@@ -35,31 +35,46 @@
 - switch to dotenv CLI [done]
 - use environment variables for AWS instead of config.update() [done]
 
-## Stage 5: Infrastructure
-- Bash script to build Docker image for production and push to ecs
-- Task definition is set up, with documentation on how to access it
-- Cluster is setup, with documentation on how to access it
-- DynamoDB is setup, with documentation on how to access it
-- EC2 has permissions and environment variables for accessing dynamodb
-- logs are pushed to Cloudwatch
+## Stage 5: Basic Infrastructure [done]
+- Bash script to build Docker image for production and push to ecs [done]
+- Task definition is set up, with documentation on how to access it [done]
+- Cluster is setup, with documentation on how to access it [done]
+- DynamoDB is setup, with documentation on how to access it [done]
+- ECS has permissions and environment variables for accessing dynamodb [done]
+- logs are pushed to Cloudwatch [done]
 - If/Else in Dockerfile based on ENV variable:
-    - in development/testing, runs UI in development mode
-    - in production, builds UI and runs from static files
-- All entities have meaningful permissions, which ideally are saved in repo as policy documents
+    - in development/testing, runs UI in development mode [done]
+    - in production, builds UI and runs from static files [done]
+- All entities have meaningful permissions, which ideally are saved in repo as policy documents [done]
 
 ## Stage 6: Auth
-- Google authentication using AWS Cognito or Amplify
-- registration flow
-- login flow
-- logout flow
-- API only exposes data for current user
+- Google authentication using AWS Cognito or Amplify [done]
+- can register / login [done]
+- id token is reused if found in local storage [done]
+- sensible auth flow in frontend and backend [done]
+- all routes use authentication and authorization [done]
+- All new secrets are stored in .env [done]
+- can logout with sensible flow
+
+## Stage 7: Post-Auth Cleanup
+- frequency string/number bug is solved
+- smooth login redirect
+- figure out correct cors policy
+- figure out SameSite attribute for cookies
+
+## Stage 7: Deployment with Auth
+- app has domain name
+- app has SSL certificate
+- app v1.0 is deployed
 
 # Stretch goals
 ## Features
-- app has domain name
-- app has SSL certificate
+- Decent logo
+- Rename taskmaster to taskmove everywhere
 - Minimal API doc generator (markdown)
+- Allow sorting by name, frequency, last-completed, or warning status
 - UI tests
+- CI/CD
 - task categories: group tasks by root and custom namespaces (household, work, etc)
 - offline mode
 - PWA

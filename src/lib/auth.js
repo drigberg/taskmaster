@@ -1,0 +1,10 @@
+const AUTH_DOMAIN = 'taskmove.auth.us-east-1.amazoncognito.com';
+const APP_CLIENT_ID = '2dk1d5ui82qphjilrne82e3vuu';
+const CALLBACK_URL = 'http://localhost:3000/dashboard';
+const SCOPE = 'aws.cognito.signin.user.admin+email+openid+profile';
+
+export function redirectToHostedSigninPage() {
+    // TODO: add challenge and challenge method
+    window.location = `https://${AUTH_DOMAIN}/login?response_type=code&client_id=${APP_CLIENT_ID}&redirect_uri=${CALLBACK_URL}&scope=${SCOPE}`;
+}
+
