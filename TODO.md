@@ -57,9 +57,11 @@
 - can logout with sensible flow [done]
 
 ## Stage 7: Post-Auth Cleanup
+- allow hardcoded jwt in testing
 - frequency string/number bug is solved
-- revise UI for logged-in vs logged-out
+- minimal UI revisions for logged-in vs logged-out
 - smooth login redirect
+- smooth logout redirect
 - remove authorization code from url after authenticating
 - figure out correct cors policy
 - figure out SameSite attribute for cookies
@@ -70,12 +72,16 @@
 - app has SSL certificate
 - app v1.0 is deployed
 
+## Stage 8: User settings
+- can change nickname
+- can change password
+- can change email
+
 # Stretch goals
-## Features
-- Decent logo
-- Rename taskmaster to taskmove everywhere
-- Minimal API doc generator (markdown)
-- Allow sorting by name, frequency, last-completed, or warning status
+## Large Features
+- federated identity with Google
+- minimal API doc generator (markdown)
+- serverless (important long-term for pricing with more projects)
 - UI tests
 - CI/CD
 - task categories: group tasks by root and custom namespaces (household, work, etc)
@@ -83,10 +89,18 @@
 - PWA
 - GraphQL
 
+## Small features
+- Sort by warning status by default
+- Loading animation (collaborators)
+- Decent logo (collaborators)
+- Rename taskmaster to taskmove everywhere
+- Allow sorting by name, frequency, last-completed, or warning status
+
 ## Best practices
 - use schemas in populate-db script
 - use AWS dynamodb converter in schemas (https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/Converter.html)
 - error handling with nice error class
 - API test coverage
-- use middleware for request context
 - DB field names use constants
+- use request context in all logs
+- use middleware for request context [done]
