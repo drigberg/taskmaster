@@ -60,9 +60,6 @@ export default function NewTask(props) {
                     id="frequency"
                     label="Frequency In Days"
                     type="number"
-                    InputLabelProps={{
-                        shrink: true,
-                    }}
                     variant="outlined"
                     value={frequency}
                     onChange={(e) => setFrequency(e.target.value)}

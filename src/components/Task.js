@@ -91,9 +91,6 @@ export default function Task(props) {
                         id={String(frequency)}
                         label="Frequency In Days"
                         type="number"
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
                         variant="outlined"
                         defaultValue={frequency}
                         onBlur={onFrequencyChange}
