@@ -57,8 +57,8 @@
 - can logout with sensible flow [done]
 
 ## Stage 7: Post-Auth Cleanup
+- frequency string/number bug is solved [done]
 - allow hardcoded jwt in testing
-- frequency string/number bug is solved
 - minimal UI revisions for logged-in vs logged-out
 - smooth login redirect
 - smooth logout redirect
