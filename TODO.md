@@ -58,7 +58,8 @@
 
 ## Stage 7: Post-Auth Cleanup
 - frequency string/number bug is solved [done]
-- allow hardcoded jwt in testing
+- allow hardcoded jwt in testing [done]
+- fix API tests [done]
 - minimal UI revisions for logged-in vs logged-out
 - smooth login redirect
 - smooth logout redirect
@@ -77,6 +78,7 @@
 - can change nickname
 - can change password
 - can change email
+- test all routes
 
 # Stretch goals
 ## Large Features
