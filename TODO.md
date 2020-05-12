@@ -66,13 +66,14 @@
 - figure out correct cors policy
 - figure out SameSite attribute for cookies
 
-## Stage 7: Deployment with Auth
+## Stage 8: Deployment with Auth
 - all new environment variables are in AWS
 - app has domain name
 - app has SSL certificate
 - app v1.0 is deployed
 
-## Stage 8: User settings
+## Stage 9: Post-Deployment Cleanup
+- decent navbar
 - can change nickname
 - can change password
 - can change email
