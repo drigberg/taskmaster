@@ -153,7 +153,7 @@ export default function Dashboard(props) {
     if (fetching) {
         body = (
             <div>
-                <p>Fetching data...</p>
+                <p>Loading...</p>
             </div>
         );
     } else if (errorMessage) {
@@ -176,7 +176,9 @@ export default function Dashboard(props) {
         const bodyComponents = [
             (<h1 key='username'>{userName}’s Tasks</h1>)
         ];
-        const buttons = [];
+        const buttons = [
+            <a href='/' key='home'><button>Home</button></a>
+        ];
 
         // add edit mode buttons
         if (!creating) {

@@ -8,6 +8,7 @@ import apiClient from '../lib/apiClient';
 import {
     redirectToHostedSigninPage,
 } from '../lib/auth';
+import ProtectedRoute from './ProtectedRoute';
 
 
 export default function AppRouter() {
@@ -16,7 +17,9 @@ export default function AppRouter() {
     }
       
     const { code: authorizationCode } = useQuery();
-    // const [loggedIn, setLoggedIn] = useState(false);
+    // assume loggedIn until proven wrong -- this can never expose data,
+    // since API calls will fail, at least until we implement caching
+    const [loggedIn, setLoggedIn] = useState(true);
     const [idToken, setIdToken] = useState('');
     const [userId, setUserId] = useState('');
     const [fetching, setFetching] = useState(false);
@@ -27,6 +30,7 @@ export default function AppRouter() {
         setUserName(null);
         setUserId('');
         setIdToken('');
+        setLoggedIn(false);
     }
 
     async function getToken() {
@@ -35,13 +39,12 @@ export default function AppRouter() {
         setErrorMessage(null);
         try {
             idToken = await apiClient.getIdToken(authorizationCode);
-        } catch (err) {
-            console.error(`Error validating authorization code: ${err}`);
+            setIdToken(idToken);
+            setLoggedIn(true);
+        } catch {
+            onLogout();
             setFetching(false);
-            setErrorMessage('Unable to log in');
-            return;
         }
-        setIdToken(idToken);
     }
 
     async function getUserData() {
@@ -79,22 +82,24 @@ export default function AppRouter() {
             }}/>
             <Route exact path="/" render={(props) => (<Home
                 {...props}
+                loggedIn={loggedIn}
                 onLogout={onLogout}
                 userName={userName}
                 fetching={fetching}
                 errorMessage={errorMessage}
             />)}>
             </Route>
-            <Route exact path="/dashboard" render={(props) => (<Dashboard
-                {...props}
+            <ProtectedRoute
+                exact path="/dashboard"
+                component={Dashboard}
+                loggedIn={loggedIn}
                 userId={userId}
                 userName={userName}
                 fetching={fetching}
                 errorMessage={errorMessage}
                 setFetching={setFetching}
                 setErrorMessage={setErrorMessage}
-            />)}>
-            </Route>
+            />
         </Switch>
     </div>);
 }

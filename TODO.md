@@ -60,9 +60,9 @@
 - frequency string/number bug is solved [done]
 - allow hardcoded jwt in testing [done]
 - fix API tests [done]
-- minimal UI revisions for logged-in vs logged-out
-- smooth login redirect
-- smooth logout redirect
+- minimal UI revisions for logged-in vs logged-out [done]
+- smooth login redirect [done]
+- smooth logout redirect [done]
 - remove authorization code from url after authenticating
 - figure out correct cors policy
 - figure out SameSite attribute for cookies
