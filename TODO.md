@@ -63,7 +63,7 @@
 - minimal UI revisions for logged-in vs logged-out [done]
 - smooth login redirect [done]
 - smooth logout redirect [done]
-- remove authorization code from url after authenticating
+- remove authorization code from url after authenticating [done]
 - figure out correct cors policy
 - figure out SameSite attribute for cookies
 
