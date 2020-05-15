@@ -6,7 +6,6 @@
     "aws-sdk": "^2.661.0",
     "axios": "^0.19.2",
     "cookie-parser": "^1.4.5",
-    "cors": "^2.8.5",
     "jsonwebtoken": "^8.5.1",
     "jwk-to-pem": "^2.0.3",
     "react": "^16.13.1",

@@ -56,7 +56,7 @@
 - All new secrets are stored in .env [done]
 - can logout with sensible flow [done]
 
-## Stage 7: Post-Auth Cleanup
+## Stage 7: Post-Auth Cleanup [done]
 - frequency string/number bug is solved [done]
 - allow hardcoded jwt in testing [done]
 - fix API tests [done]
@@ -64,8 +64,8 @@
 - smooth login redirect [done]
 - smooth logout redirect [done]
 - remove authorization code from url after authenticating [done]
-- figure out correct cors policy
-- figure out SameSite attribute for cookies
+- figure out correct cors policy [done]
+- figure out SameSite attribute for cookies [done]
 
 ## Stage 8: Deployment with Auth
 - all new environment variables are in AWS
