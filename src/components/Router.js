@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createBrowserHistory } from 'history';
 import { BrowserRouter as Switch, Route, useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 
@@ -10,13 +11,21 @@ import {
 } from '../lib/auth';
 import ProtectedRoute from './ProtectedRoute';
 
-
 export default function AppRouter() {
     function useQuery() {
         return queryString.parse(useLocation().search);
     }
       
     const { code: authorizationCode } = useQuery();
+
+    // remove authorization code from url
+    const history = createBrowserHistory();
+    const browserLocation = {...history.location};
+    const params = queryString.parse(browserLocation.search);
+    delete params.code;
+    browserLocation.search = queryString.stringify(params);
+    history.push(browserLocation);
+
     // assume loggedIn until proven wrong -- this can never expose data,
     // since API calls will fail, at least until we implement caching
     const [loggedIn, setLoggedIn] = useState(true);
