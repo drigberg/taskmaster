@@ -1,0 +1,12 @@
+{
+    "AWSEBDockerrunVersion": "1",
+    "Image": {
+      "Name": "{accountId}.dkr.ecr.{region}.amazonaws.com/taskmove:latest",
+      "Update": "true"
+    },
+    "Ports": [
+        {
+            "ContainerPort" : 3001
+        }
+    ]
+}

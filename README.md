@@ -21,11 +21,10 @@ NOTE: be sure that the app is not already running with docker-compose.
 
 ### Deployment
 #### Infrastructure
-1. Create an ECR repository (ours is named taskmaster-server)
-2. Create an ECS service role for the task, with read-write permissions for Dynamodb and Cloudwatch
-3. Create a task definition for the container using the new role
-4. Create an ECS cluster with a t2.micro EC2 instance
-5. Create a new service for the task definition, using the new cluster
+1. Create a new Elastic Beanstalk application by uploading a `Dockerrun.aws.json` file based on the sample in this directory, being sure to use an application load balancer during creation
+2. Create an alias in Route 53 from the domain name to the new application
+3. Add an https listener using the domain's SSL certificate
+4. Edit the port 80 rule on the load balancer in the EC2 console to redirect http to https
 
 
 #### Deploying new versions
@@ -36,8 +35,6 @@ NOTE: be sure that the app is not already running with docker-compose.
 4. Fetch the ECR repository URI from the AWS console 
 5. Tag the Docker image: `docker tag taskmaster:latest [REPOSITORY_URI]:latest`
 6. Push the image to ecr with `docker push [REPOSITORY_URI]:latest`
-7. Create a new revision for the task using the updated image
-8. Update the running service to use the new task revision
 
 ## Notes
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

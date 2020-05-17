@@ -68,24 +68,25 @@
 - figure out SameSite attribute for cookies [done]
 
 ## Stage 8: Deployment with Auth
-- all new environment variables are in AWS
-- app has domain name
-- app has SSL certificate
-- app v1.0 is deployed
+- domain name is purchased [done]
+- app is deployed with Elastic Beanstalk [done]
+- app uses domain name [done]
+- application load balancer redirects http to https [done]
+- latest version is deployed
+- auth works in production
 
 ## Stage 9: Post-Deployment Cleanup
 - decent navbar
-- can change nickname
-- can change password
-- can change email
-- test all routes
+- user can change nickname
+- user can change password
+- user can change email
 
 # Stretch goals
 ## Large Features
 - federated identity with Google
-- minimal API doc generator (markdown)
+- caching
+- end-to-end encryption
 - serverless (important long-term for pricing with more projects)
-- UI tests
 - CI/CD
 - task categories: group tasks by root and custom namespaces (household, work, etc)
 - offline mode
@@ -100,6 +101,8 @@
 - Allow sorting by name, frequency, last-completed, or warning status
 
 ## Best practices
+- UI tests
+- minimal API doc generator (markdown)
 - use schemas in populate-db script
 - use AWS dynamodb converter in schemas (https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/Converter.html)
 - error handling with nice error class

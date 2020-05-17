@@ -2,6 +2,7 @@
 
 # custom
 task-definition.json
+Dockerrun.aws.json
 
 # docker
 .env
