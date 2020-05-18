@@ -35,6 +35,8 @@ NOTE: be sure that the app is not already running with docker-compose.
 4. Fetch the ECR repository URI from the AWS console 
 5. Tag the Docker image: `docker tag taskmaster:latest [REPOSITORY_URI]:latest`
 6. Push the image to ecr with `docker push [REPOSITORY_URI]:latest`
+7. Rebuild Elastic Beanstalk environment
+8. Edit the port 80 rule on the load balancer in the EC2 console to redirect http to https (yes, we have to do it on every deploy, but it's still less overhead than the full ECS approach)
 
 ## Notes
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

@@ -1,6 +1,6 @@
 const AUTH_DOMAIN = 'taskmove.auth.us-east-1.amazoncognito.com';
 const APP_CLIENT_ID = '2dk1d5ui82qphjilrne82e3vuu';
-const CALLBACK_URL = 'http://localhost:3000/dashboard';
+const CALLBACK_URL = 'https://taskmove.info/';
 const SCOPE = 'aws.cognito.signin.user.admin+email+openid+profile';
 
 export function redirectToHostedSigninPage() {

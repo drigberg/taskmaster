@@ -67,15 +67,17 @@
 - figure out correct cors policy [done]
 - figure out SameSite attribute for cookies [done]
 
-## Stage 8: Deployment with Auth
+## Stage 8: Deployment with Auth [done]
 - domain name is purchased [done]
 - app is deployed with Elastic Beanstalk [done]
 - app uses domain name [done]
 - application load balancer redirects http to https [done]
-- latest version is deployed
-- auth works in production
+- latest version is deployed [done]
+    - final step: deploy latest version with correct redirect uri [done]
+- auth works in production [done]
 
 ## Stage 9: Post-Deployment Cleanup
+- pass redirect URI correctly to UI in dev and production
 - decent navbar
 - user can change nickname
 - user can change password
