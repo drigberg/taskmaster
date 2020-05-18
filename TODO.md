@@ -77,11 +77,9 @@
 - auth works in production [done]
 
 ## Stage 9: Post-Deployment Cleanup
+- Cognito hosted UI uses custom domain [done]
+- SES is moved out of sandbox
 - pass redirect URI correctly to UI in dev and production
-- decent navbar
-- user can change nickname
-- user can change password
-- user can change email
 
 # Stretch goals
 ## Large Features
@@ -96,6 +94,11 @@
 - GraphQL
 
 ## Small features
+- Account management:
+    - user can change nickname
+    - user can change password
+    - user can change email
+- Decent nav bar
 - Sort by warning status by default
 - Loading animation (collaborators)
 - Decent logo (collaborators)
