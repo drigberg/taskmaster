@@ -78,7 +78,7 @@
 
 ## Stage 9: Post-Deployment Cleanup
 - Cognito hosted UI uses custom domain [done]
-- SES is moved out of sandbox
+- SES is moved out of sandbox, or switch back to default emails from cognito [done]
 - pass redirect URI correctly to UI in dev and production
 
 # Stretch goals
@@ -94,6 +94,7 @@
 - GraphQL
 
 ## Small features
+- Force token refresh on any request which fails with token timeout
 - Account management:
     - user can change nickname
     - user can change password
@@ -107,7 +108,8 @@
 
 ## Best practices
 - UI tests
-- minimal API doc generator (markdown)
+- Find a way to ensure that not even admins can see user data in AWS console
+- basic API doc generator (markdown)
 - use schemas in populate-db script
 - use AWS dynamodb converter in schemas (https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/Converter.html)
 - error handling with nice error class
