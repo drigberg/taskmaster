@@ -39,10 +39,12 @@ export default function Dashboard(props) {
                         const lastCompleted = item.completionDates[item.completionDates.length - 1];
                         const today = new Date(new Date().setHours(0, 0, 0, 0));
                         const msSinceCompleted = today - new Date(lastCompleted);
-                        const daysSinceCompleted = msSinceCompleted / (24 * 60 * 60 * 1000);
-                        item.daysSinceCompleted = Math.round(daysSinceCompleted);
+                        const daysSinceCompleted = Math.round(msSinceCompleted / (24 * 60 * 60 * 1000));
+                        item.daysSinceCompleted = daysSinceCompleted;
+                        item.daysOverdue = daysSinceCompleted - item.frequency;
                     } else {
                         item.daysSinceCompleted = null;
+                        item.daysOverdue = null;
                     }
                 });
 
@@ -157,6 +159,7 @@ export default function Dashboard(props) {
                 frequency={data.frequency}
                 completionDates={data.completionDates}
                 daysSinceCompleted={data.daysSinceCompleted}
+                daysOverdue={data.daysOverdue}
                 editMode={editMode}
                 handleChange={handleChange}
                 handleTaskCompletion={handleTaskCompletion}
@@ -189,9 +192,9 @@ export default function Dashboard(props) {
         const unarchivedTasks = Object.values(tasksById)
             .filter((task) => !task.archived)
             .sort((item1, item2) => {
-                if (item1.daysSinceCompleted > item2.daysSinceCompleted || (item1.daysSinceCompleted !== null && item2.daysSinceCompleted === null)) {
+                if (item1.daysOverdue > item2.daysOverdue || (item1.daysOverdue !== null && item2.daysOverdue === null)) {
                     return 1;
-                } else if (item1.daysSinceCompleted < item2.daysSinceCompleted || (item1.daysSinceCompleted === null && item2.daysSinceCompleted !== null)) {
+                } else if (item1.daysOverdue < item2.daysOverdue || (item1.daysOverdue === null && item2.daysOverdue !== null)) {
                     return -1;
                 }
                 return 0;

@@ -7,6 +7,7 @@ export default function Task(props) {
         name,
         frequency,
         daysSinceCompleted,
+        daysOverdue,
         archived,
         editMode,
         handleChange,
@@ -25,9 +26,9 @@ export default function Task(props) {
         }
 
         // determine health of task based on last completion
-        if (daysSinceCompleted >= frequency && daysSinceCompleted < frequency * 2) {
+        if (daysOverdue >= 0 && daysOverdue < frequency) {
             className = 'warning';
-        } else if (daysSinceCompleted >= frequency * 2) {
+        } else if (daysOverdue >= frequency) {
             className = 'danger';
         } else {
             className = 'success';
@@ -125,6 +126,7 @@ Task.propTypes = {
     editMode: PropTypes.bool,
     frequency: PropTypes.number,
     daysSinceCompleted: PropTypes.number,
+    daysOverdue: PropTypes.number,
     archived: PropTypes.bool.isRequired,
     completionDates: PropTypes.array.isRequired,
     handleChange: PropTypes.func.isRequired,
