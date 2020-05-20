@@ -192,9 +192,14 @@ export default function Dashboard(props) {
         const unarchivedTasks = Object.values(tasksById)
             .filter((task) => !task.archived)
             .sort((item1, item2) => {
-                if (item1.daysOverdue > item2.daysOverdue || (item1.daysOverdue !== null && item2.daysOverdue === null)) {
+                // sort most-overdue tasks at the top
+                if (item1.daysOverdue !== null && item2.daysOverdue === null) {
                     return 1;
-                } else if (item1.daysOverdue < item2.daysOverdue || (item1.daysOverdue === null && item2.daysOverdue !== null)) {
+                } else if (item1.daysOverdue === null && item2.daysOverdue !== null) {
+                    return -1;
+                } else if (item1.daysOverdue / item1.frequency > item2.daysOverdue / item2.frequency) {
+                    return 1;
+                } else if (item1.daysOverdue / item1.frequency < item2.daysOverdue / item2.frequency) {
                     return -1;
                 }
                 return 0;
