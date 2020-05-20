@@ -76,10 +76,10 @@
     - final step: deploy latest version with correct redirect uri [done]
 - auth works in production [done]
 
-## Stage 9: Post-Deployment Cleanup
+## Stage 9: Post-Deployment Cleanup [done]
 - Cognito hosted UI uses custom domain [done]
 - SES is moved out of sandbox, or switch back to default emails from cognito [done]
-- pass redirect URI correctly to UI in dev and production
+- pass redirect URI correctly to UI in dev and production [done]
 
 # Stretch goals
 ## Large Features
