@@ -32,10 +32,26 @@ export default function Dashboard(props) {
             .fetchTasks()
             .then((items) => {
                 setFetching(false);
+
+                // calculate days since completed to be used for sorting and styling
+                items.forEach(item => {
+                    if (item.completionDates.length) {
+                        const lastCompleted = item.completionDates[item.completionDates.length - 1];
+                        const today = new Date(new Date().setHours(0, 0, 0, 0));
+                        const msSinceCompleted = today - new Date(lastCompleted);
+                        const daysSinceCompleted = msSinceCompleted / (24 * 60 * 60 * 1000);
+                        item.daysSinceCompleted = Math.round(daysSinceCompleted);
+                    } else {
+                        item.daysSinceCompleted = null;
+                    }
+                });
+
                 const itemsById = items.reduce((acc, item) => {
                     acc[item.id] = item;
                     return acc;
                 }, {});
+
+
                 setTasksById(itemsById);
             })
             .catch((error) => {
@@ -140,6 +156,7 @@ export default function Dashboard(props) {
                 name={data.name}
                 frequency={data.frequency}
                 completionDates={data.completionDates}
+                daysSinceCompleted={data.daysSinceCompleted}
                 editMode={editMode}
                 handleChange={handleChange}
                 handleTaskCompletion={handleTaskCompletion}
@@ -169,9 +186,17 @@ export default function Dashboard(props) {
             </div>
         );
     } else {
-        const unarchivedTasks = Object.values(tasksById).filter(
-            (task) => !task.archived
-        );
+        const unarchivedTasks = Object.values(tasksById)
+            .filter((task) => !task.archived)
+            .sort((item1, item2) => {
+                if (item1.daysSinceCompleted > item2.daysSinceCompleted || (item1.daysSinceCompleted !== null && item2.daysSinceCompleted === null)) {
+                    return 1;
+                } else if (item1.daysSinceCompleted < item2.daysSinceCompleted || (item1.daysSinceCompleted === null && item2.daysSinceCompleted !== null)) {
+                    return -1;
+                }
+                return 0;
+            });
+        
         const archivedTasks = Object.values(tasksById).filter((task) => task.archived);
         const bodyComponents = [
             (<h1 key='username'>{userName}’s Tasks</h1>)
