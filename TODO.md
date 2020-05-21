@@ -100,11 +100,11 @@
     - user can change password
     - user can change email
 - Decent nav bar
-- Sort by warning status by default [done]
 - Loading animation (collaborators)
 - Decent logo (collaborators)
 - Rename taskmaster to taskmove everywhere
 - Allow sorting by name, frequency, last-completed, or warning status
+- Sort by warning status by default [done]
 
 ## Best practices
 - UI tests
