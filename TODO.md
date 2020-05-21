@@ -100,7 +100,7 @@
     - user can change password
     - user can change email
 - Decent nav bar
-- Sort by warning status by default
+- Sort by warning status by default [done]
 - Loading animation (collaborators)
 - Decent logo (collaborators)
 - Rename taskmaster to taskmove everywhere

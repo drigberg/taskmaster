@@ -6,32 +6,32 @@ export default function Task(props) {
         id,
         name,
         frequency,
-        completionDates,
+        daysSinceCompleted,
+        daysOverdue,
         archived,
         editMode,
         handleChange,
         handleTaskCompletion,
     } = props;
 
-    let className = 'success';
+    let className = 'warning';
     let lastCompletedString = 'never';
-    if (completionDates.length) {
-    // assume sorted
-        const lastCompleted = completionDates[completionDates.length - 1];
-        const today = new Date(new Date().setHours(0, 0, 0, 0));
-        const msSinceCompleted = today - new Date(lastCompleted);
-        const daysSinceCompleted = msSinceCompleted / (24 * 60 * 60 * 1000);
-        const roundedDays = Math.round(daysSinceCompleted);
-        lastCompletedString = `${roundedDays} days ago`;
-        if (roundedDays === 0) {
+    if (daysSinceCompleted !== null) {
+        if (daysSinceCompleted === 0) {
             lastCompletedString = 'today';
+        } else if (daysSinceCompleted === 1) {
+            lastCompletedString = '1 day ago';
+        } else {
+            lastCompletedString = `${daysSinceCompleted} days ago`;
         }
 
         // determine health of task based on last completion
-        if (roundedDays >= frequency && roundedDays < frequency * 2) {
+        if (daysOverdue >= 0 && daysOverdue < frequency) {
             className = 'warning';
-        } else if (roundedDays >= frequency * 2) {
+        } else if (daysOverdue >= frequency) {
             className = 'danger';
+        } else {
+            className = 'success';
         }
     }
 
@@ -125,6 +125,8 @@ Task.propTypes = {
     name: PropTypes.string,
     editMode: PropTypes.bool,
     frequency: PropTypes.number,
+    daysSinceCompleted: PropTypes.number,
+    daysOverdue: PropTypes.number,
     archived: PropTypes.bool.isRequired,
     completionDates: PropTypes.array.isRequired,
     handleChange: PropTypes.func.isRequired,

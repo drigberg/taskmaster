@@ -32,10 +32,28 @@ export default function Dashboard(props) {
             .fetchTasks()
             .then((items) => {
                 setFetching(false);
+
+                // calculate days since completed to be used for sorting and styling
+                items.forEach(item => {
+                    if (item.completionDates.length) {
+                        const lastCompleted = item.completionDates[item.completionDates.length - 1];
+                        const today = new Date(new Date().setHours(0, 0, 0, 0));
+                        const msSinceCompleted = today - new Date(lastCompleted);
+                        const daysSinceCompleted = Math.round(msSinceCompleted / (24 * 60 * 60 * 1000));
+                        item.daysSinceCompleted = daysSinceCompleted;
+                        item.daysOverdue = daysSinceCompleted - item.frequency;
+                    } else {
+                        item.daysSinceCompleted = null;
+                        item.daysOverdue = null;
+                    }
+                });
+
                 const itemsById = items.reduce((acc, item) => {
                     acc[item.id] = item;
                     return acc;
                 }, {});
+
+
                 setTasksById(itemsById);
             })
             .catch((error) => {
@@ -140,6 +158,8 @@ export default function Dashboard(props) {
                 name={data.name}
                 frequency={data.frequency}
                 completionDates={data.completionDates}
+                daysSinceCompleted={data.daysSinceCompleted}
+                daysOverdue={data.daysOverdue}
                 editMode={editMode}
                 handleChange={handleChange}
                 handleTaskCompletion={handleTaskCompletion}
@@ -169,9 +189,22 @@ export default function Dashboard(props) {
             </div>
         );
     } else {
-        const unarchivedTasks = Object.values(tasksById).filter(
-            (task) => !task.archived
-        );
+        const unarchivedTasks = Object.values(tasksById)
+            .filter((task) => !task.archived)
+            .sort((item1, item2) => {
+                // sort most-overdue tasks at the top
+                if (item1.daysOverdue !== null && item2.daysOverdue === null) {
+                    return 1;
+                } else if (item1.daysOverdue === null && item2.daysOverdue !== null) {
+                    return -1;
+                } else if (item1.daysOverdue / item1.frequency > item2.daysOverdue / item2.frequency) {
+                    return 1;
+                } else if (item1.daysOverdue / item1.frequency < item2.daysOverdue / item2.frequency) {
+                    return -1;
+                }
+                return 0;
+            });
+        
         const archivedTasks = Object.values(tasksById).filter((task) => task.archived);
         const bodyComponents = [
             (<h1 key='username'>{userName}’s Tasks</h1>)
