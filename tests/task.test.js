@@ -4,13 +4,12 @@ const fs = require('fs');
 const { describe, it } = require('mocha');
 const path = require('path');
 
-const {Task, User} = require('../lib/models');
+const {Task} = require('../lib/models');
 
 const BASEURL = 'http://localhost:3002';
 
 const TESTDATA_DIR = path.join(__dirname, 'testdata');
 
-const testUsers = JSON.parse(fs.readFileSync(path.join(TESTDATA_DIR, 'users.json'), 'utf8'));
 const testTasks = JSON.parse(fs.readFileSync(path.join(TESTDATA_DIR, 'tasks.json'), 'utf8'));
 
 // TODO: create a helper for this
@@ -29,8 +28,6 @@ const INVALID_AUTH_OPTIONS = {
 describe('Tasks', function () {
     beforeEach(async function () {
         await Task.removeAll();
-        await User.removeAll();
-        await User.create(testUsers[0]);
     });
 
     describe('POST /api/tasks', function () {

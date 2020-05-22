@@ -68,6 +68,10 @@ export default function AppRouter() {
             return;
         }
 
+        if (process.env.NODE_ENV !== 'production') {
+            console.log(`Your user id is ${userData.id}`);
+        }
+
         setUserId(userData.id);
         setUserName(userData.name);
         setFetching(false);

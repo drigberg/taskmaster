@@ -197,9 +197,9 @@ export default function Dashboard(props) {
                     return 1;
                 } else if (item1.daysOverdue === null && item2.daysOverdue !== null) {
                     return -1;
-                } else if (item1.daysOverdue / item1.frequency > item2.daysOverdue / item2.frequency) {
-                    return 1;
                 } else if (item1.daysOverdue / item1.frequency < item2.daysOverdue / item2.frequency) {
+                    return 1;
+                } else if (item1.daysOverdue / item1.frequency > item2.daysOverdue / item2.frequency) {
                     return -1;
                 }
                 return 0;
