@@ -1,4 +1,4 @@
-# TASKMASTER TO-DO LIST
+# TO-DO LIST
 
 ## Stage 1: build basic app that works [done]
 - setup boilerplate app [done]
@@ -83,32 +83,37 @@
 
 # Stretch goals
 ## Large Features
+- insights tab
 - federated identity with Google
 - caching
 - end-to-end encryption
 - serverless (important long-term for pricing with more projects)
-- CI/CD
+- CI/CD (blocked by serverless)
 - task categories: group tasks by root and custom namespaces (household, work, etc)
 - offline mode
 - PWA
 - GraphQL
 
 ## Small features
-- Force token refresh on any request which fails with token timeout
-- Account management:
+- force token refresh on any request which fails with token timeout
+- don't require login when browser is closed and reopened
+- status-based styling on mobile
+- account management:
     - user can change nickname
     - user can change password
     - user can change email
-- Decent nav bar
-- Loading animation (collaborators)
-- Decent logo (collaborators)
-- Rename taskmaster to taskmove everywhere
-- Allow sorting by name, frequency, last-completed, or warning status
-- Sort by warning status by default [done]
+- decent nav bar
+- loading animation (collaborators)
+- decent logo (collaborators)
+- rename repo and docker image from taskmaster to taskmove
+- allow sorting by name, frequency, last-completed, or warning status
+- sort by warning status by default [done]
+- better testdata to cover edge cases [done]
 
 ## Best practices
+- cleaner state management in UI
 - UI tests
-- Find a way to ensure that not even admins can see user data in AWS console
+- find a way to ensure that not even admins can see user data in AWS console
 - basic API doc generator (markdown)
 - use schemas in populate-db script
 - use AWS dynamodb converter in schemas (https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/Converter.html)

@@ -25,7 +25,7 @@ export default function Home(props) {
             });
     }
     return (<div>
-        <h1>Task Master</h1>
+        <h1>Taskmove</h1>
         <h2>{text}</h2>
         {!props.loggedIn && <a href="/login/"><button>Sign In / Register</button></a>}
         {props.loggedIn && <button onClick={logout}>Logout</button>}
