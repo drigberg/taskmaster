@@ -10,8 +10,9 @@ Commands:
 - `docker-compose build`: build docker container (you should only need to do this once, unless you change the Dockerfile, docker-compose.yml, or package.json)
 - `docker-compose up`: run the app
 - `docker-compose stop`: stop the app
-- `docker-compose exec app npm run setup-db:dev`: create and fill database tables
-    - You'll need to run this every time you restart the app, as the local database does not persist after being shut down.
+- `docker-compose exec app npm run setup-db:dev -- [YOUR_USER_ID]`: create and fill database tables
+    - You can get your user id by starting the app and logging in -- when the app is not in production, your user id will be logged in console.
+    - NOTE: You'll need to run this every time you restart the app, as the local database does not persist after being shut down.
     - NOTE: This command must be run from a separate tab while the app is running!
 
 #### Testing
