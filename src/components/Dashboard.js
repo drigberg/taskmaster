@@ -42,9 +42,14 @@ export default function Dashboard(props) {
                         const daysSinceCompleted = Math.round(msSinceCompleted / (24 * 60 * 60 * 1000));
                         item.daysSinceCompleted = daysSinceCompleted;
                         item.daysOverdue = daysSinceCompleted - item.frequency;
+                        item.daysUntilDue = item.frequency - daysSinceCompleted;
+                        if (item.daysUntilDue < 0) {
+                            item.daysUntilDue = 0;
+                        }
                     } else {
                         item.daysSinceCompleted = null;
                         item.daysOverdue = null;
+                        item.daysUntilDue = 0;
                     }
                 });
 
@@ -149,66 +154,7 @@ export default function Dashboard(props) {
             .then(() => fetchTasks());
     }
 
-    function createTaskComponentFromData(data) {
-        return (
-            <Task
-                key={data.id}
-                id={data.id}
-                archived={data.archived}
-                name={data.name}
-                frequency={data.frequency}
-                completionDates={data.completionDates}
-                daysSinceCompleted={data.daysSinceCompleted}
-                daysOverdue={data.daysOverdue}
-                editMode={editMode}
-                handleChange={handleChange}
-                handleTaskCompletion={handleTaskCompletion}
-            />
-        );
-    }
-
-    let body = null;
-
-    // TODO: use banner here instead of body replace
-    if (fetching) {
-        body = (
-            <div>
-                <p>Loading...</p>
-            </div>
-        );
-    } else if (errorMessage) {
-        body = (
-            <div>
-                <p>Error: {errorMessage}</p>
-            </div>
-        );
-    } else if (!userName) {
-        body = (
-            <div>
-                <p>No data yet</p>
-            </div>
-        );
-    } else {
-        const unarchivedTasks = Object.values(tasksById)
-            .filter((task) => !task.archived)
-            .sort((item1, item2) => {
-                // sort most-overdue tasks at the top
-                if (item1.daysOverdue !== null && item2.daysOverdue === null) {
-                    return 1;
-                } else if (item1.daysOverdue === null && item2.daysOverdue !== null) {
-                    return -1;
-                } else if (item1.daysOverdue / item1.frequency < item2.daysOverdue / item2.frequency) {
-                    return 1;
-                } else if (item1.daysOverdue / item1.frequency > item2.daysOverdue / item2.frequency) {
-                    return -1;
-                }
-                return 0;
-            });
-        
-        const archivedTasks = Object.values(tasksById).filter((task) => task.archived);
-        const bodyComponents = [
-            (<h1 key='username'>{userName}’s Tasks</h1>)
-        ];
+    function createButtons() {
         const buttons = [
             <a href='/' key='home'><button>Home</button></a>
         ];
@@ -238,27 +184,121 @@ export default function Dashboard(props) {
             );
         }
 
-        bodyComponents.push(
-            <div key='button-wrapper' className="button-wrapper">
-                <div className="button-container">{buttons}</div>
+        return buttons;
+    }
+
+    function createTaskComponentFromData(data, severity = null) {
+        return (
+            <Task
+                key={data.id}
+                id={data.id}
+                archived={data.archived}
+                name={data.name}
+                frequency={data.frequency}
+                completionDates={data.completionDates}
+                daysSinceCompleted={data.daysSinceCompleted}
+                daysOverdue={data.daysOverdue}
+                editMode={editMode}
+                severity={severity}
+                handleChange={handleChange}
+                handleTaskCompletion={handleTaskCompletion}
+            />
+        );
+    }
+
+    function groupTasksByDueDate(tasks) {
+        const tasksByDueDate = [];
+        const categoriesWithComparisonFunctions = [
+            ['Due Today', task => task.daysUntilDue === 0, 'danger'],
+            ['Due Tomorrow', task => task.daysUntilDue === 1, 'warning'],
+            ['Due Later This Week', task => task.daysUntilDue > 1 && task.daysUntilDue <= 7, 'success'],
+            ['Due Eventually', task => task.daysUntilDue > 7, 'success']
+        ];
+        categoriesWithComparisonFunctions.forEach(([category, comparisonFunction, severity]) => {
+            const matchingTasks = tasks.filter(comparisonFunction);
+            if (matchingTasks.length) {
+                tasksByDueDate.push([category, matchingTasks.map(task => createTaskComponentFromData(task, severity))]);
+            }
+        });
+        return tasksByDueDate;
+    }
+
+    let body = null;
+
+    // TODO: use banner here instead of body replace
+    if (fetching) {
+        body = (
+            <div>
+                <p>Loading...</p>
             </div>
         );
+    } else if (errorMessage) {
+        body = (
+            <div>
+                <p>Error: {errorMessage}</p>
+            </div>
+        );
+    } else if (!userName) {
+        body = (
+            <div>
+                <p>No data yet</p>
+            </div>
+        );
+    } else {
+        const bodyComponents = [
+            (<h1 key='username'>{userName}’s Tasks</h1>),
+            (<div key='button-wrapper' className="button-wrapper">
+                <div className="button-container">{createButtons()}</div>
+            </div>)
+        ];
+
+        // group tasks
+        const unarchivedTasks = Object.values(tasksById)
+            .filter((task) => !task.archived)
+            .sort((item1, item2) => {
+                // sort most-overdue tasks at the top
+                if (item1.daysOverdue !== null && item2.daysOverdue === null) {
+                    return 1;
+                } else if (item1.daysOverdue === null && item2.daysOverdue !== null) {
+                    return -1;
+                } else if (item1.daysOverdue / item1.frequency < item2.daysOverdue / item2.frequency) {
+                    return 1;
+                } else if (item1.daysOverdue / item1.frequency > item2.daysOverdue / item2.frequency) {
+                    return -1;
+                }
+                return 0;
+            });
+        
+        const archivedTasks = Object.values(tasksById).filter((task) => task.archived);
 
         // add tasks list
-        const tasksListComponents = [
-            unarchivedTasks.map(createTaskComponentFromData),
-        ];
-        if (editMode && archivedTasks.length) {
-            tasksListComponents.push(
-                <h3 key="archivedTasks">Archived Tasks</h3>,
-                archivedTasks.map(createTaskComponentFromData)
+        if (editMode) {
+            const tasksListComponents = [
+                unarchivedTasks.map(task => createTaskComponentFromData(task, 'EDIT')),
+            ];
+            if (archivedTasks.length) {
+                tasksListComponents.push(
+                    <h3 key="archivedTasks">Archived Tasks</h3>,
+                    archivedTasks.map(task => createTaskComponentFromData(task, 'EDIT'))
+                );
+            }
+            bodyComponents.push(
+                <ul className="cards" key="tasksListComponents">
+                    {tasksListComponents}
+                </ul>
             );
+        } else {
+            const tasksByDueDate = groupTasksByDueDate(unarchivedTasks);
+            const tasksListComponents = tasksByDueDate.map(([sectionTitle, tasks]) => (
+                <div key={sectionTitle}>
+                    <h2>{sectionTitle}</h2>
+                    <ul className="cards">
+                        {tasks}
+                    </ul>
+                </div>
+            ));
+            bodyComponents.push(tasksListComponents);
         }
-        bodyComponents.push(
-            <ul className="cards" key="tasksListComponents">
-                {tasksListComponents}
-            </ul>
-        );
 
         // create body
         body = <div key='body-div'>{bodyComponents}</div>;

@@ -77,7 +77,33 @@ label {
   padding: 20px;
 }
 
-.card:nth-child(odd) {
+.danger {
+  background-color: rgba(255, 0, 0, 0.4)
+}
+
+.danger:nth-child(odd) {
+  background-color: rgba(255, 0, 0, 0.2)
+}
+
+.warning {
+  background-color: rgba(255, 0, 0, 0.4)
+}
+
+.warning:nth-child(odd) {
+  background-color: rgba(255, 0, 0, 0.2)
+}
+
+
+.success {
+  background-color: rgba(0, 200, 255, 0.4)
+}
+
+.success:nth-child(odd) {
+  background-color: rgba(0, 200, 255, 0.2)
+}
+
+
+.EDIT:nth-child(odd) {
   background-color: rgba(220, 220, 220, 0.2);
 }
 
@@ -117,50 +143,6 @@ label {
   background-color: var(--color-success);
   transform: scale(1.1);
   box-shadow: 0px 0px 3px rgba(1, 1, 1, 0.3);
-}
-
-.card p span {
-  position: relative;
-}
-
-.card p span:before {
-  content: "";
-  bottom: 0;
-  left: 5px;
-  width: 100%;
-  height: 5px;
-  position: absolute;
-  z-index: -1;
-  opacity: 0.5;
-}
-
-.card.warning p span:before {
-  background-color: var(--color-warning);
-}
-
-.card.danger p span:before {
-  background-color: var(--color-danger);
-}
-
-.card.success p span:before {
-  background-color: var(--color-success);
-}
-
-.card.info p span:before {
-  background-color: var(--color-primary);
-}
-
-.card.danger p span:after {
-  content: "❗️";
-  font-size: 30px;
-  position: absolute;
-  top: -30px;
-  opacity: 0;
-  transition: opacity 400ms ease;
-}
-
-.card.danger:hover p span:after {
-  opacity: 1;
 }
 
 .edit-task {

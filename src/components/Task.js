@@ -7,14 +7,13 @@ export default function Task(props) {
         name,
         frequency,
         daysSinceCompleted,
-        daysOverdue,
+        severity,
         archived,
         editMode,
         handleChange,
         handleTaskCompletion,
     } = props;
 
-    let className = 'warning';
     let lastCompletedString = 'never';
     if (daysSinceCompleted !== null) {
         if (daysSinceCompleted === 0) {
@@ -23,15 +22,6 @@ export default function Task(props) {
             lastCompletedString = '1 day ago';
         } else {
             lastCompletedString = `${daysSinceCompleted} days ago`;
-        }
-
-        // determine health of task based on last completion
-        if (daysOverdue >= 0 && daysOverdue < frequency) {
-            className = 'warning';
-        } else if (daysOverdue >= frequency) {
-            className = 'danger';
-        } else {
-            className = 'success';
         }
     }
 
@@ -102,7 +92,7 @@ export default function Task(props) {
     }
 
     return (
-        <div key={name} className={`card ${className}`}>
+        <div key={name} className={`card ${severity}`}>
             <h4>
                 {name} every {frequency} days
             </h4>
@@ -127,6 +117,7 @@ Task.propTypes = {
     frequency: PropTypes.number,
     daysSinceCompleted: PropTypes.number,
     daysOverdue: PropTypes.number,
+    severity: PropTypes.string,
     archived: PropTypes.bool.isRequired,
     completionDates: PropTypes.array.isRequired,
     handleChange: PropTypes.func.isRequired,
