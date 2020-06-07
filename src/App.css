@@ -42,6 +42,10 @@ button {
   min-height: 40px;
 }
 
+.button-container button {
+  margin-bottom: 10px;
+}
+
 input {
   padding: 10px 15px;
   border-radius: 5px;
@@ -72,38 +76,36 @@ label {
 
 .card {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 9fr 5fr 1fr;
   grid-gap: 20px;
   padding: 20px;
 }
 
-.danger {
-  background-color: rgba(255, 0, 0, 0.4)
+.card p {
+  font-weight: 800;
+  border-radius: 7px;
+  padding: 7px;
+  text-align: center;
+  color: white;
 }
 
-.danger:nth-child(odd) {
-  background-color: rgba(255, 0, 0, 0.2)
+.card p {
+  align-self: center;
 }
 
-.warning {
-  background-color: rgba(255, 0, 0, 0.4)
+.danger p {
+  background-color: rgb(194, 1, 1);
+
+}
+.warning p {
+  background-color: rgb(200, 130, 0);
 }
 
-.warning:nth-child(odd) {
-  background-color: rgba(255, 0, 0, 0.2)
+.success p {
+  background-color: rgb(0, 83, 160);
 }
 
-
-.success {
-  background-color: rgba(0, 200, 255, 0.4)
-}
-
-.success:nth-child(odd) {
-  background-color: rgba(0, 200, 255, 0.2)
-}
-
-
-.EDIT:nth-child(odd) {
+.card:nth-child(odd) {
   background-color: rgba(220, 220, 220, 0.2);
 }
 
@@ -111,12 +113,6 @@ label {
   text-transform: capitalize;
   margin: 0;
   align-self: center;
-}
-
-.card p {
-  margin: 0;
-  align-self: center;
-  color: rgba(100, 100, 100, 1);
 }
 
 .card button {
@@ -127,6 +123,7 @@ label {
   line-height: 0.5;
   padding: 0;
   justify-self: end;
+  align-self: center;
   cursor: pointer;
   transform: scale(1);
   box-shadow: 0px 0px 0px rgba(1, 1, 1, 0);

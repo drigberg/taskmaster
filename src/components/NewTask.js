@@ -37,7 +37,7 @@ export default function NewTask(props) {
     if (!creating) {
         return (
             <button variant="contained" color="primary" onClick={onAddNewTask}>
-        ➕Add new task
+                <span role="img" aria-label="plus">➕</span>Add new task
             </button>
         );
     }
@@ -71,10 +71,10 @@ export default function NewTask(props) {
                 type="submit"
                 disabled={disableSave}
             >
-        ✓ Create
+                <span role="img" aria-label="checkmark">✓</span> Create
             </button>
             <button variant="contained" color="secondary" onClick={discard}>
-        🗑 Discard
+                <span role="img" aria-label="trashcan">🗑</span> Discard
             </button>
         </form>
     );

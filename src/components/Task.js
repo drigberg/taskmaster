@@ -14,14 +14,14 @@ export default function Task(props) {
         handleTaskCompletion,
     } = props;
 
-    let lastCompletedString = 'never';
+    let lastCompletedString = 'Not completed yet';
     if (daysSinceCompleted !== null) {
         if (daysSinceCompleted === 0) {
-            lastCompletedString = 'today';
+            lastCompletedString = 'Completed today';
         } else if (daysSinceCompleted === 1) {
-            lastCompletedString = '1 day ago';
+            lastCompletedString = 'Completed yesterday';
         } else {
-            lastCompletedString = `${daysSinceCompleted} days ago`;
+            lastCompletedString = `Completed ${daysSinceCompleted} days ago`;
         }
     }
 
@@ -49,7 +49,7 @@ export default function Task(props) {
                     color="secondary"
                     onMouseDown={() => setArchived(false)}
                 >
-          📼 Unarchive
+                    <span role="img" area-label="VHS">📼</span> Unarchive
                 </button>
             );
         } else {
@@ -59,7 +59,7 @@ export default function Task(props) {
                     color="secondary"
                     onMouseDown={() => setArchived(true)}
                 >
-          📼 Archive
+                    <span role="img" area-label="VHS">📼</span> Archive
                 </button>
             );
         }
@@ -97,14 +97,15 @@ export default function Task(props) {
                 {name} every {frequency} days
             </h4>
             <p>
-        Last completed: <span>{lastCompletedString}</span>
+                {lastCompletedString}
             </p>
             <button
+                className="complete-button"
                 variant="contained"
                 color="primary"
                 onMouseDown={() => handleTaskCompletion(id)}
             >
-        ✓
+                <span role="img" area-label="checkmark">✓</span>
             </button>
         </div>
     );

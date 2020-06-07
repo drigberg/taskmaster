@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { createBrowserHistory } from 'history';
 
 import Task from './Task';
 import NewTask from './NewTask';
@@ -11,6 +12,7 @@ export default function Dashboard(props) {
     const [tasksById, setTasksById] = useState([]);
     const [creating, setCreating] = useState(false);
     const [editMode, setEditMode] = useState(false);
+    const history = createBrowserHistory();
 
     // tasksMutations is the simplified set of mutations to be provided
     // in the POST call to updateTasksBulk
@@ -156,7 +158,10 @@ export default function Dashboard(props) {
 
     function createButtons() {
         const buttons = [
-            <a href='/' key='home'><button>Home</button></a>
+            <button
+                key='home'
+                onClick={() => history.push('/')}
+            ><span role="img" aria-label="house">🏠</span>Home</button>
         ];
 
         // add edit mode buttons
