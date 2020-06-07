@@ -96,7 +96,6 @@
 
 ## Small features
 - force token refresh on any request which fails with token timeout
-- don't require login when browser is closed and reopened
 - status-based styling on mobile
 - account management:
     - user can change nickname
@@ -109,6 +108,7 @@
 - allow sorting by name, frequency, last-completed, or warning status
 - sort by warning status by default [done]
 - better testdata to cover edge cases [done]
+- don't require login when browser is closed and reopened [done]
 
 ## Best practices
 - cleaner state management in UI
