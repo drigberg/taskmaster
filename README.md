@@ -6,6 +6,8 @@ First, create a file called `.env` in this directory using the contents found in
 
 To run locally, you'll need to install docker and docker-compose. These tools allow us to spin up a local instance of DynamoDB, as well as to mimic the production environment as closely as possible while developing.
 
+Note: When you make changes, it will appear that you're logged out, but it's just that the server is down! Keep refreshing the UI, and you'll be logged in again.
+
 Commands:
 - `docker-compose build`: build docker container (you should only need to do this once, unless you change the Dockerfile, docker-compose.yml, or package.json)
 - `docker-compose up`: run the app

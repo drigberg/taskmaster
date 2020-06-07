@@ -95,7 +95,9 @@
 - GraphQL
 
 ## Small features
+- fix refresh over long intervals
 - force token refresh on any request which fails with token timeout
+- group-by-next-date option
 - don't require login when browser is closed and reopened
 - status-based styling on mobile
 - account management:

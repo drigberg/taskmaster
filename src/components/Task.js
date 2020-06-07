@@ -7,31 +7,21 @@ export default function Task(props) {
         name,
         frequency,
         daysSinceCompleted,
-        daysOverdue,
+        severity,
         archived,
         editMode,
         handleChange,
         handleTaskCompletion,
     } = props;
 
-    let className = 'warning';
-    let lastCompletedString = 'never';
+    let lastCompletedString = 'Not completed yet';
     if (daysSinceCompleted !== null) {
         if (daysSinceCompleted === 0) {
-            lastCompletedString = 'today';
+            lastCompletedString = 'Completed today';
         } else if (daysSinceCompleted === 1) {
-            lastCompletedString = '1 day ago';
+            lastCompletedString = 'Completed yesterday';
         } else {
-            lastCompletedString = `${daysSinceCompleted} days ago`;
-        }
-
-        // determine health of task based on last completion
-        if (daysOverdue >= 0 && daysOverdue < frequency) {
-            className = 'warning';
-        } else if (daysOverdue >= frequency) {
-            className = 'danger';
-        } else {
-            className = 'success';
+            lastCompletedString = `Completed ${daysSinceCompleted} days ago`;
         }
     }
 
@@ -59,7 +49,7 @@ export default function Task(props) {
                     color="secondary"
                     onMouseDown={() => setArchived(false)}
                 >
-          📼 Unarchive
+                    <span role="img" area-label="VHS">📼</span> Unarchive
                 </button>
             );
         } else {
@@ -69,7 +59,7 @@ export default function Task(props) {
                     color="secondary"
                     onMouseDown={() => setArchived(true)}
                 >
-          📼 Archive
+                    <span role="img" area-label="VHS">📼</span> Archive
                 </button>
             );
         }
@@ -102,19 +92,20 @@ export default function Task(props) {
     }
 
     return (
-        <div key={name} className={`card ${className}`}>
+        <div key={name} className={`card ${severity}`}>
             <h4>
                 {name} every {frequency} days
             </h4>
             <p>
-        Last completed: <span>{lastCompletedString}</span>
+                {lastCompletedString}
             </p>
             <button
+                className="complete-button"
                 variant="contained"
                 color="primary"
                 onMouseDown={() => handleTaskCompletion(id)}
             >
-        ✓
+                <span role="img" area-label="checkmark">✓</span>
             </button>
         </div>
     );
@@ -127,6 +118,7 @@ Task.propTypes = {
     frequency: PropTypes.number,
     daysSinceCompleted: PropTypes.number,
     daysOverdue: PropTypes.number,
+    severity: PropTypes.string,
     archived: PropTypes.bool.isRequired,
     completionDates: PropTypes.array.isRequired,
     handleChange: PropTypes.func.isRequired,

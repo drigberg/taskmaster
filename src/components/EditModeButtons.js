@@ -18,7 +18,7 @@ export default function EditModeButtons(props) {
         return (
             <>
                 <button key="save" variant="contained" color="primary" onClick={onSave}>
-          💾 Save Changes
+                    <span role="img" aria-label="floppydisk">💾</span> Save Changes
                 </button>
                 <button
                     key="discard"
@@ -26,7 +26,7 @@ export default function EditModeButtons(props) {
                     color="secondary"
                     onClick={onDiscardChanges}
                 >
-          🗑 Discard Changes
+                    <span role="img" aria-label="trashcan">🗑</span> Discard Changes
                 </button>
             </>
         );
@@ -39,7 +39,7 @@ export default function EditModeButtons(props) {
             color="primary"
             onClick={() => setEditMode(true)}
         >
-      📝 Edit Tasks
+            <span role="img" aria-label="paper-and-pencil">📝</span> Edit Tasks
         </button>
     );
 }
